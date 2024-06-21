@@ -1,0 +1,9 @@
+@SYSTEM_TITLE
+    $LOOP_1
+    PRINTBUTTON "START", 1
+    INPUT
+    IF RESULT == 1
+        CALL MAIN_UI
+    ELSE
+        GOTO LOOP_1
+    ENDIF

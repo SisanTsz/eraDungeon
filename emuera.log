@@ -1,0 +1,8 @@
+﻿Now Loading...
+START
+1
+TITLE.ERBの6行目でエラーが発生しました:
+        CALL MAIN_UI
+エラー内容：指定された関数名"@MAIN_UI"は存在しません
+現在の関数：@SYSTEM_TITLE（TITLE.ERBの1行目）
+関数呼び出しスタック：
