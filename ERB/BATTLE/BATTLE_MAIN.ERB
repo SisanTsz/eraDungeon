@@ -1,0 +1,15 @@
+@BATTLE_START(ARG:0,ARG:1,ARG:2,ARG:3)
+    #DIM LCOUNT
+    #DIMS PRE
+    FOR LCOUNT, 0, 4
+        IF ARG:LCOUNT != 0
+            ADDCHARA ARG:LCOUNT
+            CFLAG:(CHARANUM-1):TEAM = 2
+            CFLAG:(CHARANUM-1):TEAMMEMBER = LCOUNT + 1
+            PRE = ENEMYMEMBER%TOSTR(LCOUNT+1)%
+            FLAG:PRE = CHARANUM-1
+        ENDIF
+    NEXT
+    ;数值微调
+    FOR LCOUNT, 1, 5
+    NEXT

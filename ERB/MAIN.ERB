@@ -1,12 +1,27 @@
-@MAIN_FUNCTION
-    SELECTCASE FLAG:GAMESTAGE
-        CASE 0
+@MAIN_UI
+    SELECTCASE STR:GAMESTAGE
+        CASE "SLG"
             CALL UI_SLG
-        CASE 1
+        CASE "ROUGE"
             CALL UI_ROUGE
-        CASE 2 
+        CASE "BATTLE"
             CALL UI_BATTLE
-        CASE 3
+        CASE "ROUGE_PRE"
             CALL UI_ROUGE_PRE
     ENDSELECT
+    INPUT
+    CALL MAIN_INPUT
+
+@MAIN_INPUT
+    SELECTCASE STR:GAMESTAGE
+        CASE "SLG"
+            CALL INPUT_SLG
+        CASE "ROUGE"
+            CALL INPUT_ROUGE
+        CASE "BATTLE"
+            CALL INPUT_BATTLE
+        CASE "ROUGE_PRE"
+            CALL INPUT_ROUGE_PRE
+    ENDSELECT
     
+    CALL MAIN_UI

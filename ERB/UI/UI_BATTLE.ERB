@@ -1,0 +1,166 @@
+@UI_BATTLE
+    #DIM LCOUNT 
+    CUSTOMDRAWLINE -
+    CALL UI_BATTLE_BACKGROUND
+    CUSTOMDRAWLINE -
+    CALL BATTLE_MESSAGE_PUSH("战斗信息1`战斗信息2`战斗信息3`")
+    CALL BATTLE_MESSAGE 
+    CALL PRINT_LINE(2)
+    CALL UI_BATTLE_STAGE
+    CALL PRINT_LINE(2)
+    CUSTOMDRAWLINE -
+    PRINTL 技能区
+    CUSTOMDRAWLINE -
+    PRINTL 系统设置
+
+@UI_BATTLE_CONTROL
+
+
+
+@UI_BATTLE_BACKGROUND
+    ALIGNMENT CENTER
+    PRINT |
+    CALL PRINT_COLORBAR_RE(FLAG:粉红之雾浓度,1000,50,BARCOLORSET("紫"))
+    PRINTFORM |%LEN_STR(TOSTR(FLAG:粉红之雾浓度), 8)%|
+    CALL PRINT_COLORBAR(FLAG:粉红之雾浓度,1000,50,BARCOLORSET("紫"))
+    PRINT |
+    PRINTL
+
+
+@UI_BATTLE_STAGE
+    #DIM LCOUNT
+    #DIMS PRE
+    ALIGNMENT CENTER
+    FOR LCOUNT, 4, 0, -1
+        PRE = TEAMMEMBER%TOSTR(LCOUNT)%
+        IF FLAG:PRE != 0
+            PRINTFORM [%LEN_STR(CALLNAME:(FLAG:PRE), 8)%]
+        ELSE
+            PRINTFORM [%LEN_STR("-", 8)%]
+        ENDIF
+        PRINTFORM %SPACE(2)%
+    NEXT
+    PRINT |
+    FOR LCOUNT, 1, 5
+        PRINTFORM %SPACE(2)%
+        PRE = ENEMYMEMBER%TOSTR(LCOUNT)%
+        IF FLAG:PRE != 0
+            PRINTFORM [%LEN_STR(CALLNAME:(FLAG:PRE), 8)%]
+        ELSE
+            PRINTFORM [%LEN_STR("-", 8)%]
+        ENDIF
+    NEXT
+    PRINTL
+    ;数值条
+    FOR LCOUNT, 4, 0, -1
+        PRE = TEAMMEMBER%TOSTR(LCOUNT)%
+        IF FLAG:PRE != 0
+            PRINTFORM |
+            CALL PRINT_COLORBAR(BASE:(FLAG:PRE):体力,MAXBASE:(FLAG:PRE):体力,8,BARCOLORSET("赤"))
+            PRINT |
+        ELSE
+            PRINTFORM %SPACE(10)%
+        ENDIF
+        PRINTFORM %SPACE(2)%
+    NEXT
+    PRINT  
+    FOR LCOUNT, 1, 5
+        PRINTFORM %SPACE(2)%
+        PRE = ENEMYMEMBER%TOSTR(LCOUNT)%
+        IF FLAG:PRE != 0
+            PRINTFORM |
+            CALL PRINT_COLORBAR(BASE:(FLAG:PRE):体力,MAXBASE:(FLAG:PRE):体力,8,BARCOLORSET("赤"))
+            PRINT |
+        ELSE
+            PRINTFORM %SPACE(10)%
+        ENDIF
+    NEXT
+    ;性欲
+    PRINTL
+    FOR LCOUNT, 4, 0, -1
+        PRE = TEAMMEMBER%TOSTR(LCOUNT)%
+        IF FLAG:PRE != 0
+            PRINTFORM |
+            CALL PRINT_COLORBAR(BASE:(FLAG:PRE):性欲,MAXBASE:(FLAG:PRE):性欲,8,BARCOLORSET("紫"))
+            PRINT |
+        ELSE
+            PRINTFORM %SPACE(10)%
+        ENDIF
+        PRINTFORM %SPACE(2)%
+    NEXT
+    PRINT  
+    FOR LCOUNT, 1, 5
+        PRINTFORM %SPACE(2)%
+        PRE = ENEMYMEMBER%TOSTR(LCOUNT)%
+        IF FLAG:PRE != 0
+            PRINTFORM |
+            CALL PRINT_COLORBAR(BASE:(FLAG:PRE):性欲,MAXBASE:(FLAG:PRE):性欲,8,BARCOLORSET("紫"))
+            PRINT |
+        ELSE
+            PRINTFORM %SPACE(10)%
+        ENDIF
+    NEXT
+    ;快感
+    PRINTL
+    FOR LCOUNT, 4, 0, -1
+        PRE = TEAMMEMBER%TOSTR(LCOUNT)%
+        IF FLAG:PRE != 0
+            PRINTFORM |
+            CALL PRINT_COLORBAR(BASE:(FLAG:PRE):快感,MAXBASE:(FLAG:PRE):快感,8,BARCOLORSET())
+            PRINT |
+        ELSE
+            PRINTFORM %SPACE(10)%
+        ENDIF
+        PRINTFORM %SPACE(2)%
+    NEXT
+    PRINT  
+    FOR LCOUNT, 1, 5
+        PRINTFORM %SPACE(2)%
+        PRE = ENEMYMEMBER%TOSTR(LCOUNT)%
+        IF FLAG:PRE != 0
+            PRINTFORM |
+            CALL PRINT_COLORBAR(BASE:(FLAG:PRE):快感,MAXBASE:(FLAG:PRE):快感,8,BARCOLORSET())
+            PRINT |
+        ELSE
+            PRINTFORM %SPACE(10)%
+        ENDIF
+    NEXT
+    
+
+
+
+
+
+
+@BATTLE_MESSAGE
+    #DIM LCOUNT 
+    #DIMS PRE
+    #DIM LNUM 
+    LNUM = 10
+    FOR LCOUNT, 0, LNUM
+        PRE = BATTLEMESSAGE%TOSTR(LCOUNT+1)%
+        PRINTFORML %STR:PRE%
+    NEXT
+    PRINTL
+    CUSTOMDRAWLINE - 
+
+@BATTLE_MESSAGE_PUSH(ARGS)
+    #DIM WNUM
+    #DIM LNUM
+    #DIM WNO = 0
+    #DIM LCOUNT
+    #DIMS PRE 
+    #DIMS PRE_1
+    SPLIT ARGS, "`", LOCALS
+    WNO = 0
+    LNUM = 10
+    WNUM = RESULT
+    FOR LCOUNT, 100, WNUM, -1
+        PRE = BATTLEMESSAGE%TOSTR(LCOUNT)%
+        PRE_1 = BATTLEMESSAGE%TOSTR(LCOUNT - WNUM)%
+        STR:PRE = %STR:PRE_1%
+    NEXT
+    FOR LCOUNT, 1, WNUM + 1
+        PRE = BATTLEMESSAGE%TOSTR(LCOUNT)%
+        STR:PRE = %LOCALS:(LCOUNT - 1)%
+    NEXT
