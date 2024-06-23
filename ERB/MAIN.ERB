@@ -23,5 +23,18 @@
         CASE "ROUGE_PRE"
             CALL INPUT_ROUGE_PRE
     ENDSELECT
+    CALL MAIN_CHECK
     
+
+@MAIN_CHECK
+    SELECTCASE STR:GAMESTAGE
+        CASE "SLG"
+            CALL CHECK_SLG
+        CASE "ROUGE"
+            CALL CHECK_ROUGE
+        CASE "BATTLE"
+            CALL CHECK_BATTLE
+        CASE "ROUGE_PRE"
+            CALL CHECK_ROUGE_PRE
+    ENDSELECT
     CALL MAIN_UI

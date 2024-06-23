@@ -1,0 +1,94 @@
+@BATTLE_SKILL_COMABLE(ARG:0,ARG:1)  ;角色, 角色技能
+    #FUNCTIONS
+    LOCAL = BATTLE_SKILL_COMABLE_{ARG:0}_{ARG:1}
+    RETURNF LOCAL
+
+@BATTLE_SKILL(ARG:0,ARG:1,ARG:2) ;角色, 角色技能,对象
+    TRYCALLFORM BATTLE_SKILL_{ARG:0}_{ARG:1}(ARG:2)
+
+@BATTLE_SKILL_COMABLE_TARGET(ARG:0,ARG:1)  ;角色, 角色技能
+    #FUNCTIONS
+    RETURNF {BATTLE_SKILL_COMABLE_TARGET_{ARG:0}_{ARG:1}}
+
+
+
+
+@BATTLE_CHECK_LOCATION(ARG:0,ARG:1,ARG:2,ARG:3,ARG:4) ;角色, 位置1/2/3/4
+    #FUNCTIONS
+    #DIM LCOUNT
+    LOCAL = 0
+    FOR LCOUNT, 1, 5
+        IF ARG:LCOUNT != 0
+            IF CFLAG:(ARG:0):TEAMMEMBER == ARG:LCOUNT
+                LOCAL = 1
+                BREAK
+            ENDIF
+        ENDIF
+    NEXT
+    RETURNF LOCAL
+
+@BATTLE_CHECK_ENEMY_LOCATION(ARG:0,ARG:1,ARG:2,ARG:3,ARG:4) ;角色, 位置1/2/3/4
+    #FUNCTIONS
+    #DIM LCOUNT
+    #DIMS PRE
+    LOCAL = 0
+    IF CFLAG:(ARG:0):TEAM == 1
+        FOR LCOUNT, 1, 5
+            IF ARG:LCOUNT != 0
+                PRE = ENEMYMEMBER%TOSTR(ARG:LCOUNT)%
+                IF FLAG:PRE != 0
+                    LOCAL = 1
+                    BREAK
+                ENDIF
+            ENDIF
+        NEXT
+    ELSEIF CFLAG:(ARG:0):TEAM == 2
+        FOR LCOUNT, 1, 5
+            IF ARG:LCOUNT != 0
+                PRE = TEAMMEMBER%TOSTR(ARG:LCOUNT)%
+                IF FLAG:PRE != 0
+                    LOCAL = 1
+                    BREAK
+                ENDIF
+            ENDIF
+        NEXT
+    ENDIF
+    RETURNF LOCAL
+
+@BATTLE_CHECK_TEAM_LOCATION(ARG:0,ARG:1,ARG:2,ARG:3,ARG:4) ;角色, 位置1/2/3/4
+    #FUNCTIONS
+    #DIM LCOUNT
+    #DIMS PRE
+    LOCAL = 0
+    IF CFLAG:(ARG:0):TEAM == 1
+        FOR LCOUNT, 1, 5
+            IF ARG:LCOUNT != 0
+                PRE = TEAMMEMBER%TOSTR(ARG:LCOUNT)%
+                IF FLAG:PRE != 0 && FLAG:PRE != (ARG:0)
+                    LOCAL = 1
+                    BREAK
+                ENDIF
+            ENDIF
+        NEXT
+    ELSEIF CFLAG:(ARG:0):TEAM == 2
+        FOR LCOUNT, 1, 5
+            IF ARG:LCOUNT != 0
+                PRE = ENEMYMEMBER%TOSTR(ARG:LCOUNT)%
+                IF FLAG:PRE != 0 && FLAG:PRE != (ARG:0)
+                    LOCAL = 1
+                    BREAK
+                ENDIF
+            ENDIF
+        NEXT
+    ENDIF
+    RETURNF LOCAL
+
+@BATTLE_CHECK_CD(ARG:0,ARG:1) ;角色,技能
+    #FUNCTIONS
+    #DIMS PRE
+    LOCAL = 0
+    PRE = SKILLCD%TOSTR(ARG:1)%
+    IF CFLAG:(ARG:0):PRE > 0
+        LOCAL = 1
+    ENDIF
+    RETURNF LOCAL
