@@ -10,10 +10,62 @@
             FLAG:PRE = CHARANUM-1
         ENDIF
     NEXT
-    ;数值微调
-
 
 @BATTLE_FIRST_PLAYER
     #DIM LCOUNT
-    #DIM TIMELINE
+    #DIM ORDER
+    #DIM SPEED
+    #DIM CSPEED
+    #DIM ENDTURN
+    SPEED = 0
+    ORDER = 0
+    ENDTURN = 0
+
+    FOR LCOUNT, 101, 120
+        IF FLAGNAME:LCOUNT != ""
+            IF FLAG:LCOUNT != 0
+                IF CFLAG:(FLAG:LCOUNT):MOVABLE != 0
+                    ENDTURN = 0
+                    BREAK
+                ELSE
+                    ENDTURN = 1
+                ENDIF
+            ENDIF
+        ENDIF
+    NEXT
+
+    IF ENDTURN == 1
+        FOR LCOUNT, 101, 120
+            IF FLAGNAME:LCOUNT != ""
+                IF FLAG:LCOUNT != 0
+                    IF BASE:(FLAG:LCOUNT):体力 > 0
+                        CFLAG:(FLAG:LCOUNT):MOVABLE += 1
+                    ENDIF
+                ENDIF
+            ENDIF
+        NEXT
+    ENDIF
     
+    FOR LCOUNT, 101, 120
+        IF FLAGNAME:LCOUNT != ""
+            IF (FLAG:LCOUNT) != 0
+                IF CFLAG:(FLAG:LCOUNT):MOVABLE != 0
+                    LOCAL = FLAG:LCOUNT
+                    CSPEED = BATTLE_CHARA_DATA(LOCAL,"速度")
+                    PRINTFORML %FLAGNAME:LCOUNT%
+                    IF CSPEED > SPEED
+                        SPEED = CSPEED
+                        ORDER = FLAG:LCOUNT
+                    ENDIF
+                ENDIF
+            ENDIF
+        ENDIF
+    NEXT
+    FLAG:行动角色 = ORDER
+
+@BATTLE_CHARA_DATA(ARG,ARGS) ;角色,属性
+    #FUNCTION
+    #DIMS PRE
+    PRE = %ARGS%修正
+    LOCAL = BASE:ARG:ARGS + BASE:ARG:PRE
+    RETURNF LOCAL

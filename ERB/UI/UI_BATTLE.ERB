@@ -12,11 +12,128 @@
     CALL UI_BATTLE_CONTROL
     CUSTOMDRAWLINE -
     PRINTL 系统设置
-
+    
 @UI_BATTLE_CONTROL
-    PRINTFORML %NAME:(FLAG:行动角色)%
-    PRINTFORML %CSTR:(FLAG:行动角色)%
+    #DIM LCOUNT
+    #DIMS PRE
+    #DIMS PRE_1
+    #DIMS PRE_2
+    PRINTFORMLC %NAME:(FLAG:行动角色)%
+    PRINTFORMLC %CSTR:(FLAG:行动角色)%
+    PRINTL
+    PRINTL
+    PRE = %TOSTR(BASE:(FLAG:行动角色):体力)%
+    PRE = %LEN_STR_L(PRE,8)%
+    PRE_1 = %TOSTR(MAXBASE:(FLAG:行动角色):体力)%
+    PRE_1 = %LEN_STR_L(PRE_1,8)%
+    PRE = %PRE%/%PRE_1%
+    PRINTFORM 体力:%LEN_STR_R(PRE, 20)%
 
+    PRE = %LEN_STR_L("物理防御:",10)%
+    PRE_1 = %TOSTR(BATTLE_CHARA_DATA(FLAG:行动角色,"物理防御"))%
+    PRE = %PRE%%PRE_1%%"%"%
+    PRINTFORM %PRE%
+
+    PRE = %LEN_STR_L("闪避:",8)%
+    PRE_1 = %TOSTR(BATTLE_CHARA_DATA(FLAG:行动角色,"闪避"))%
+    PRE = %PRE%%PRE_1%
+    PRINTFORML %PRE%
+
+    PRE = %TOSTR(BASE:(FLAG:行动角色):性欲)%
+    PRE = %LEN_STR_L(PRE,8)%
+    PRE_1 = %TOSTR(MAXBASE:(FLAG:行动角色):性欲)%
+    PRE_1 = %LEN_STR_L(PRE_1,8)%
+    PRE = %PRE%/%PRE_1%
+    PRINTFORM 性欲:%LEN_STR_R(PRE, 20)%
+
+    PRE = %LEN_STR_L("法术防御:",10)%
+    PRE_1 = %TOSTR(BATTLE_CHARA_DATA(FLAG:行动角色,"法术防御"))%
+    PRE = %PRE%%PRE_1%%"%"%
+    PRINTFORML %PRE%
+
+
+    PRE = %TOSTR(BASE:(FLAG:行动角色):快感)%
+    PRE = %LEN_STR_L(PRE,8)%
+    PRE_1 = %TOSTR(MAXBASE:(FLAG:行动角色):快感)%
+    PRE_1 = %LEN_STR_L(PRE_1,8)%
+    PRE = %PRE%/%PRE_1%
+    PRINTFORM 快感:%LEN_STR_R(PRE, 20)%
+
+    PRE = %LEN_STR_L("速度:",10)%
+    PRE_1 = %TOSTR(BATTLE_CHARA_DATA(FLAG:行动角色,"速度"))%
+    PRE = %PRE%%PRE_1%
+    PRINTFORML %PRE%
+
+    ;技能列
+    PRINTL
+    FOR LCOUNT, 1, 5
+        PRE = SKILL%TOSTR(LCOUNT)%
+        IF CFLAG:(FLAG:行动角色):PRE != 0
+            PRE = SKILLNAME%TOSTR(CFLAG:(FLAG:行动角色):PRE)%
+            CALL BATTLE_SKILL_COMABLE(FLAG:行动角色,LCOUNT)
+            IF FLAG:技能可选 == 1
+                IF LCOUNT == FLAG:选择技能
+                    GETFOCUSCOLOR
+                    SETCOLOR RESULT
+                    PRINTBUTTONLC @"[%CSTR:(FLAG:行动角色):PRE%]", LCOUNT
+                    RESETCOLOR
+                ELSE
+                    PRINTBUTTONLC @"[%CSTR:(FLAG:行动角色):PRE%]", LCOUNT
+                ENDIF
+            ELSE
+                CALL SET_COLOR("灰")
+                PRINTFORMLC [%CSTR:(FLAG:行动角色):PRE%]
+                RESETCOLOR
+            ENDIF
+        ENDIF
+    NEXT
+    PRINTL
+
+    IF FLAG:选择技能 == 0
+        CALL PRINT_LINE(5)
+    ELSE
+        TRYCALLFORM SKILL_DESCRIPTION_{CHARA_TO_NO(FLAG:行动角色)}(FLAG:选择技能)
+    ENDIF
+
+    ;选择对象
+    FOR LCOUNT, 4, 0, -1
+        PRE = TEAMMEMBER%TOSTR(LCOUNT)%
+        IF FLAG:PRE != 0
+            CALL BATTLE_SKILL_COMABLE_TARGET(FLAG:行动角色,FLAG:选择技能,1,LCOUNT)
+            IF FLAG:对象可选 == 1
+                PRINTBUTTON @"[%LEN_STR(CALLNAME:(FLAG:PRE), 8)%]", 1000 + LCOUNT
+            ELSE
+                CALL SET_COLOR("灰")
+                PRINTFORM [%LEN_STR(CALLNAME:(FLAG:PRE), 8)%]
+                RESETCOLOR
+            ENDIF
+        ELSE
+            CALL SET_COLOR("灰")
+            PRINTFORM [%LEN_STR("-", 8)%]
+            RESETCOLOR
+        ENDIF
+        PRINTFORM %SPACE(2)%
+    NEXT
+    PRINT |
+    FOR LCOUNT, 1, 5
+        PRINTFORM %SPACE(2)%
+        PRE = ENEMYMEMBER%TOSTR(LCOUNT)%
+        IF FLAG:PRE != 0
+            CALL BATTLE_SKILL_COMABLE_TARGET(FLAG:行动角色,FLAG:选择技能,2,LCOUNT)
+            IF FLAG:对象可选 == 1
+                PRINTBUTTON @"[%LEN_STR(CALLNAME:(FLAG:PRE), 8)%]", 1010 + LCOUNT
+            ELSE
+                CALL SET_COLOR("灰")
+                PRINTFORM [%LEN_STR(CALLNAME:(FLAG:PRE), 8)%]
+                RESETCOLOR
+            ENDIF
+        ELSE
+            CALL SET_COLOR("灰")
+            PRINTFORM [%LEN_STR("-", 8)%]
+            RESETCOLOR
+        ENDIF
+    NEXT
+    PRINTL
 
 
 @UI_BATTLE_BACKGROUND
@@ -127,7 +244,8 @@
             PRINTFORM %SPACE(10)%
         ENDIF
     NEXT
-    ALIGNMENT CENTER
+    PRINTL
+    ALIGNMENT LEFT
 
 
 

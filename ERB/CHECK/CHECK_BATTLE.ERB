@@ -1,4 +1,46 @@
 @CHECK_BATTLE
+    #DIM LCOUNT
+    #DIMS PRE 
+    FLAG:失败 = 1
+    FLAG:胜利 = 1
+    IF FLAG:进行回合 == 1
+        FLAG:进行回合 = 0
+        FLAG:回合数 += 1
+        CFLAG:(FLAG:行动角色):MOVABLE -= 1
+        FLAG:选择技能 = 0
+    ENDIF
+    FOR LCOUNT, 1, 5
+        PRE = TEAMMEMBER%TOSTR(LCOUNT)%
+        IF BASE:(FLAG:PRE):体力 > 0
+            FLAG:失败 = 0
+            BREAK
+        ENDIF
+    NEXT
+    PRINTFORML {CHARANUM}
+    FOR LCOUNT, 1, 5
+        PRE = ENEMYMEMBER%TOSTR(LCOUNT)%
+        IF FLAG:PRE != 0
+            IF BASE:(FLAG:PRE):体力 > 0
+                FLAG:胜利 = 0
+            ELSE
+                FLAG:PRE = 0
+                DELALLCHARA FLAG:PRE
+            ENDIF
+        ENDIF
+    NEXT
+    
+    ;敌方行动
+    IF CHARA_TO_NO(FLAG:行动角色) > 1000
+        CALL BATTLE_ENEMYMOVEMENT
+    ENDIF
+
+
+    IF FLAG:失败 == 1 || FLAG:胜利 == 1
+        ;完成战斗
+    ELSE
+        CALL BATTLE_FIRST_PLAYER
+    ENDIF
+    
 
 
 
@@ -9,8 +51,3 @@
 
 
 
-
-
-
-
-@CHECK_ROUGE_PRE

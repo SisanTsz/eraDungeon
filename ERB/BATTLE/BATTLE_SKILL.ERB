@@ -1,34 +1,49 @@
 @BATTLE_SKILL_COMABLE(ARG:0,ARG:1)  ;角色, 角色技能
-    #FUNCTIONS
-    LOCAL = BATTLE_SKILL_COMABLE_{ARG:0}_{ARG:1}
-    RETURNF LOCAL
+    #DIMS PRE
+    PRE = SKILL%TOSTR(ARG:1)%
+    FLAG:技能可选 = 0
+    TRYCALLFORM BATTLE_SKILL_COMABLE_{CHARA_TO_NO(ARG:0)}(CFLAG:(ARG:0):PRE)
+
 
 @BATTLE_SKILL(ARG:0,ARG:1,ARG:2) ;角色, 角色技能,对象
     TRYCALLFORM BATTLE_SKILL_{ARG:0}_{ARG:1}(ARG:2)
 
-@BATTLE_SKILL_COMABLE_TARGET(ARG:0,ARG:1)  ;角色, 角色技能
-    #FUNCTIONS
-    RETURNF {BATTLE_SKILL_COMABLE_TARGET_{ARG:0}_{ARG:1}}
+@BATTLE_SKILL_COMABLE_TARGET(ARG:0,ARG:1,ARG:2,ARG:3)  ;角色, 角色技能, 队伍,位置
+    CALLFORM BATTLE_SKILL_COMABLE_TARGET_{CHARA_TO_NO(ARG:0)}(ARG:1,ARG:2,ARG:3)
 
 
 
 
 @BATTLE_CHECK_LOCATION(ARG:0,ARG:1,ARG:2,ARG:3,ARG:4) ;角色, 位置1/2/3/4
-    #FUNCTIONS
+    #FUNCTION
     #DIM LCOUNT
+    #DIMS PRE
     LOCAL = 0
-    FOR LCOUNT, 1, 5
-        IF ARG:LCOUNT != 0
-            IF CFLAG:(ARG:0):TEAMMEMBER == ARG:LCOUNT
-                LOCAL = 1
-                BREAK
+    IF CFLAG:(ARG:0):TEAM == 1
+        FOR LCOUNT, 1, 5
+            IF ARG:LCOUNT != 0
+                PRE = TEAMMEMBER%TOSTR(LCOUNT)%
+                IF FLAG:PRE == ARG:0
+                    LOCAL = 1
+                    BREAK
+                ENDIF
             ENDIF
-        ENDIF
-    NEXT
+        NEXT
+    ELSEIF CFLAG:(ARG:0):TEAM == 2
+        FOR LCOUNT, 1, 5
+            IF ARG:LCOUNT != 0
+                PRE = ENEMYMEMBER%TOSTR(LCOUNT)%
+                IF FLAG:PRE == ARG:0
+                    LOCAL = 1
+                    BREAK
+                ENDIF
+            ENDIF
+        NEXT
+    ENDIF
     RETURNF LOCAL
 
 @BATTLE_CHECK_ENEMY_LOCATION(ARG:0,ARG:1,ARG:2,ARG:3,ARG:4) ;角色, 位置1/2/3/4
-    #FUNCTIONS
+    #FUNCTION
     #DIM LCOUNT
     #DIMS PRE
     LOCAL = 0
@@ -56,7 +71,7 @@
     RETURNF LOCAL
 
 @BATTLE_CHECK_TEAM_LOCATION(ARG:0,ARG:1,ARG:2,ARG:3,ARG:4) ;角色, 位置1/2/3/4
-    #FUNCTIONS
+    #FUNCTION
     #DIM LCOUNT
     #DIMS PRE
     LOCAL = 0
@@ -84,7 +99,7 @@
     RETURNF LOCAL
 
 @BATTLE_CHECK_CD(ARG:0,ARG:1) ;角色,技能
-    #FUNCTIONS
+    #FUNCTION
     #DIMS PRE
     LOCAL = 0
     PRE = SKILLCD%TOSTR(ARG:1)%
@@ -92,3 +107,47 @@
         LOCAL = 1
     ENDIF
     RETURNF LOCAL
+
+@BATTLE_BASE_CHANGE(ARG,ARG:1,ARGS) ;角色,修改 属性
+    SELECTCASE ARGS
+        CASE "体力"
+            BASE:ARG:ARGS += ARG:1
+        CASE "性欲"
+            BASE:ARG:ARGS += ARG:1
+        CASE "快感"
+            BASE:ARG:ARGS += ARG:1
+        CASE "物理攻击"
+            BASE:ARG:物理攻击修正 += ARG:1
+        CASE "法术攻击"
+            BASE:ARG:法术攻击修正 += ARG:1
+        CASE "命中"
+            BASE:ARG:命中修正 += ARG:1
+        CASE "暴击率"
+            BASE:ARG:暴击率修正 += ARG:1
+        CASE "爆击伤害"
+            BASE:ARG:爆击伤害修正 += ARG:1
+        CASE "速度"
+            BASE:ARG:速度修正 += ARG:1
+        CASE "物理防御"
+            BASE:ARG:物理防御修正 += ARG:1
+        CASE "法术防御"
+            BASE:ARG:法术防御修正 += ARG:1
+        CASE "闪避"
+            BASE:ARG:闪避修正 += ARG:1
+        CASE "肉体抗性"
+            BASE:ARG:肉体抗性修正 += ARG:1
+        CASE "精神抗性"
+            BASE:ARG:精神抗性修正 += ARG:1
+        CASE "异常抗性"
+            BASE:ARG:异常抗性修正 += ARG:1
+        CASE "药毒抗性"
+            BASE:ARG:药毒抗性修正 += ARG:1
+        CASE "性奋抗性"
+            BASE:ARG:性奋抗性修正 += ARG:1
+        CASE "位移抗性"
+            BASE:ARG:位移抗性修正 += ARG:1
+        CASE "流血抗性"
+            BASE:ARG:流血抗性修正 += ARG:1
+    ENDSELECT
+            
+

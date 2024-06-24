@@ -1,0 +1,36 @@
+@BATTLE_SKILL_1001(ARG:0)
+    SELECTCASE ARG:0
+        CASE 1
+    ENDSELECT
+
+@BATTLE_SKILL_COMABLE_1001(ARG)
+    #DIM SIT
+    SIT = 0
+    IF CFLAG:(FLAG:行动角色):TEAM == 2
+        SELECTCASE ARG
+            CASE 1
+                SIF BATTLE_CHECK_LOCATION(FLAG:行动角色,1,2)
+                    SIT += 1
+                SIF BATTLE_CHECK_ENEMY_LOCATION(1,1,2)
+                    SIT += 1
+                IF SIT == 2
+                    FLAG:技能可选 = 1
+                ELSE
+                    FLAG:技能可选 = 0
+                ENDIF
+        ENDSELECT
+    ENDIF
+
+@BATTLE_SKILL_COMABLE_TARGET_1001(ARG:0,ARG:1,ARG:2) ;技能,队伍,位置
+    SELECTCASE ARG:0
+        CASE 1
+            IF ARG:1 == 1
+                IF ARG:1 == 1 | ARG:1 == 2
+                    FLAG:对象可选 = 1
+                ELSE
+                    FLAG:对象可选 = 0
+                ENDIF
+            ELSE
+                FLAG:对象可选 = 0
+            ENDIF
+    ENDSELECT

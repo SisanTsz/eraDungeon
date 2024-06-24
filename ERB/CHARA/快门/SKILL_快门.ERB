@@ -1,0 +1,55 @@
+@SKILL_DESCRIPTION_1(ARG)
+    SELECTCASE ARG
+        CASE 1
+        PRINTL 物理攻击x100%, 前进1
+        PRINTFORML 物理攻击:{BATTLE_CHARA_DATA(1,"物理攻击")}
+        PRINTFORML 暴击率:{BATTLE_CHARA_DATA(1,"暴击率")}%"%"%
+        PRINTFORML 命中:{BATTLE_CHARA_DATA(1,"命中")}
+        PRINTFORML 
+    ENDSELECT
+
+@BATTLE_SKILL_1(ARG:0) ;技能
+    SELECTCASE ARG:0
+        CASE 1
+            LOCAL = BATTLE_CHARA_DATA(FLAG:行动角色,"物理攻击")
+            CALL BATTLE_BASE_CHANGE(FLAG:选择对象,0-LOCAL,"体力")
+    ENDSELECT
+
+@BATTLE_SKILL_COMABLE_1(ARG)
+    #DIM SIT
+    SIT = 0
+    IF CFLAG:(FLAG:行动角色):TEAM == 1
+        SELECTCASE ARG
+            CASE 1
+                SIF BATTLE_CHECK_LOCATION(FLAG:行动角色,1,2) == 1
+                    SIT += 1
+                SIF BATTLE_CHECK_ENEMY_LOCATION(FLAG:行动角色,1,2)
+                    SIT += 1
+                IF SIT == 2
+                    FLAG:技能可选 = 1
+                ELSE
+                    FLAG:技能可选 = 0
+                ENDIF
+        ENDSELECT
+    ENDIF
+
+@BATTLE_SKILL_COMABLE_TARGET_1(ARG:0,ARG:1,ARG:2) ;技能,队伍,位置
+    SELECTCASE ARG:0
+        CASE 1
+            IF ARG:1 == 2
+                IF ARG:1 == 1 | ARG:1 == 2
+                    FLAG:对象可选 = 1
+                ELSE
+                    FLAG:对象可选 = 0
+                ENDIF
+            ELSE
+                FLAG:对象可选 = 0
+            ENDIF
+    ENDSELECT
+
+@SKILL_TO_NO(ARG:0,ARG:1) ;角色,技能
+    #FUNCTION
+    #DIMS PRE
+    PRE = SKILL%TOSTR(ARG:1)%
+    LOCAL = CFLAG:(ARG:0):PRE
+    RETURNF LOCAL

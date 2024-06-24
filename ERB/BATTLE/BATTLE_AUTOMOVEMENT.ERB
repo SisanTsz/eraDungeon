@@ -1,0 +1,28 @@
+@BATTLE_ENEMYMOVEMENT
+    #DIM LCOUNT
+    #DIM CHARA
+    #DIM ANO
+    #DIMS CODE
+    #DIM CHOICE
+    #DIM CHOICES
+    CHOICE = 0
+    CODE = 
+    CHOICES =
+    ANO = 0
+    CHARA = CHARA_TO_NO(FLAG:行动角色)
+    FLAG:技能可选 = 0
+    FOR LCOUNT, 1, 11
+        CALL BATTLE_SKILL_COMABLE_{CHARA}(LCOUNT)
+        IF FLAG:技能可选 == 1
+            IF ANO == 0
+                CODE = %TOSTR(LCOUNT)%
+            ELSE
+                CODE = %CODE%.%TOSTR(LCOUNT)%
+                ANO += 1
+            ENDIF
+        ENDIF
+        FLAG:技能可选 = 0
+    NEXT
+    SPLIT CODE, ".", LOCALS
+    CHOICE = REND:RESULT
+    CHOICES = %TOSTR(LOCALS:CHOCIE)%
