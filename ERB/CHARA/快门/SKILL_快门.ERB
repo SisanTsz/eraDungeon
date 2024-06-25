@@ -21,9 +21,9 @@
     IF CFLAG:(FLAG:行动角色):TEAM == 1
         SELECTCASE ARG
             CASE 1
-                SIF BATTLE_CHECK_LOCATION(FLAG:行动角色,1,2) == 1
+                SIF BATTLE_CHECK_LOCATION(FLAG:行动角色,1,2,3) == 1
                     SIT += 1
-                SIF BATTLE_CHECK_ENEMY_LOCATION(FLAG:行动角色,1,2)
+                SIF BATTLE_CHECK_ENEMY_LOCATION(FLAG:行动角色,1,2,3)
                     SIT += 1
                 IF SIT == 2
                     FLAG:技能可选 = 1
@@ -37,7 +37,7 @@
     SELECTCASE ARG:0
         CASE 1
             IF ARG:1 == 2
-                IF ARG:1 == 1 | ARG:1 == 2
+                IF ARG:2 == 1 || ARG:2 == 2 || ARG:2 == 3
                     FLAG:对象可选 = 1
                 ELSE
                     FLAG:对象可选 = 0
@@ -47,9 +47,3 @@
             ENDIF
     ENDSELECT
 
-@SKILL_TO_NO(ARG:0,ARG:1) ;角色,技能
-    #FUNCTION
-    #DIMS PRE
-    PRE = SKILL%TOSTR(ARG:1)%
-    LOCAL = CFLAG:(ARG:0):PRE
-    RETURNF LOCAL

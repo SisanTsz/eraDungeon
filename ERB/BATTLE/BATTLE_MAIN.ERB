@@ -52,7 +52,6 @@
                 IF CFLAG:(FLAG:LCOUNT):MOVABLE != 0
                     LOCAL = FLAG:LCOUNT
                     CSPEED = BATTLE_CHARA_DATA(LOCAL,"速度")
-                    PRINTFORML %FLAGNAME:LCOUNT%
                     IF CSPEED > SPEED
                         SPEED = CSPEED
                         ORDER = FLAG:LCOUNT

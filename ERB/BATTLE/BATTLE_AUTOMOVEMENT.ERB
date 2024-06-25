@@ -3,26 +3,55 @@
     #DIM CHARA
     #DIM ANO
     #DIMS CODE
+    #DIM ENEMY_CHOICE
     #DIM CHOICE
-    #DIM CHOICES
+    #DIMS CHOICES
+    #DIMS PRE
     CHOICE = 0
     CODE = 
-    CHOICES =
+    CHOICES = 
     ANO = 0
     CHARA = CHARA_TO_NO(FLAG:行动角色)
     FLAG:技能可选 = 0
     FOR LCOUNT, 1, 11
-        CALL BATTLE_SKILL_COMABLE_{CHARA}(LCOUNT)
+        CALLFORM BATTLE_SKILL_COMABLE_{CHARA}(LCOUNT)
         IF FLAG:技能可选 == 1
             IF ANO == 0
                 CODE = %TOSTR(LCOUNT)%
             ELSE
                 CODE = %CODE%.%TOSTR(LCOUNT)%
-                ANO += 1
             ENDIF
+            ANO += 1
         ENDIF
         FLAG:技能可选 = 0
     NEXT
     SPLIT CODE, ".", LOCALS
-    CHOICE = REND:RESULT
-    CHOICES = %TOSTR(LOCALS:CHOCIE)%
+    CHOICE = RAND:RESULT
+    CHOICE = TOINT(LOCALS:CHOICE)
+    CODE = 
+    ANO = 0
+    IF CHOICE != 0
+        FOR LCOUNT, 1, 5
+            FLAG:对象可选 = 0
+            PRE = TEAMMEMBER%TOSTR(LCOUNT)%
+            IF FLAG:PRE != 0
+                CALLFORM BATTLE_SKILL_COMABLE_TARGET_{CHARA}(CHOICE,1,LCOUNT)
+                IF FLAG:对象可选 == 1
+                    IF ANO == 0
+                        CODE = %TOSTR(LCOUNT)%
+                    ELSE
+                        CODE = %CODE%.%TOSTR(LCOUNT)%
+                    ENDIF
+                    ANO += 1
+                ENDIF
+                FLAG:对象可选 = 0
+            ENDIF
+        NEXT
+    ENDIF
+    SPLIT CODE, ".", LOCALS
+    ENEMY_CHOICE = RAND:RESULT
+    ENEMY_CHOICE = TOINT(LOCALS:ENEMY_CHOICE)
+    FLAG:选择对象 = ENEMY_CHOICE
+    IF CHOICE != 0
+        CALLFORM BATTLE_SKILL_{CHARA}(CHOICE)
+    ENDIF

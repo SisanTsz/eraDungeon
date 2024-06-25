@@ -4,7 +4,7 @@
     CALL UI_BATTLE_BACKGROUND
     CUSTOMDRAWLINE -
     CALL BATTLE_MESSAGE_PUSH("战斗信息1`战斗信息2`战斗信息3`")
-    CALL BATTLE_MESSAGE 
+    CALL BATTLE_MESSAGE
     CALL PRINT_LINE(2)
     CALL UI_BATTLE_STAGE
     CALL PRINT_LINE(2)
@@ -75,18 +75,20 @@
                 IF LCOUNT == FLAG:选择技能
                     GETFOCUSCOLOR
                     SETCOLOR RESULT
-                    PRINTBUTTONLC @"[%CSTR:(FLAG:行动角色):PRE%]", LCOUNT
+                    PRINTBUTTON @"[%LEN_STR(CSTR:(FLAG:行动角色):PRE,10)%]", LCOUNT
                     RESETCOLOR
                 ELSE
-                    PRINTBUTTONLC @"[%CSTR:(FLAG:行动角色):PRE%]", LCOUNT
+                    PRINTBUTTON @"[%LEN_STR(CSTR:(FLAG:行动角色):PRE,10)%]", LCOUNT
                 ENDIF
             ELSE
                 CALL SET_COLOR("灰")
-                PRINTFORMLC [%CSTR:(FLAG:行动角色):PRE%]
+                PRINTFORM [%LEN_STR(CSTR:(FLAG:行动角色):PRE,10)%]
                 RESETCOLOR
             ENDIF
         ENDIF
     NEXT
+    PRINTFORM [%LEN_STR("移动",10)%]
+    PRINTBUTTON @"[%LEN_STR("跳过",10)%]", 12
     PRINTL
 
     IF FLAG:选择技能 == 0
@@ -96,43 +98,74 @@
     ENDIF
 
     ;选择对象
-    FOR LCOUNT, 4, 0, -1
-        PRE = TEAMMEMBER%TOSTR(LCOUNT)%
-        IF FLAG:PRE != 0
-            CALL BATTLE_SKILL_COMABLE_TARGET(FLAG:行动角色,FLAG:选择技能,1,LCOUNT)
-            IF FLAG:对象可选 == 1
-                PRINTBUTTON @"[%LEN_STR(CALLNAME:(FLAG:PRE), 8)%]", 1000 + LCOUNT
+    IF FLAG:选择技能 != 0
+        FOR LCOUNT, 4, 0, -1
+            PRE = TEAMMEMBER%TOSTR(LCOUNT)%
+            IF FLAG:PRE != 0
+                CALL BATTLE_SKILL_COMABLE_TARGET(FLAG:行动角色,FLAG:选择技能,1,LCOUNT)
+                IF FLAG:对象可选 == 1
+                    PRINTBUTTON @"[%LEN_STR(CALLNAME:(FLAG:PRE), 8)%]", 1000 + LCOUNT
+                ELSE
+                    CALL SET_COLOR("灰")
+                    PRINTFORM [%LEN_STR(CALLNAME:(FLAG:PRE), 8)%]
+                    RESETCOLOR
+                ENDIF
             ELSE
+                CALL SET_COLOR("灰")
+                PRINTFORM [%LEN_STR("-", 8)%]
+                RESETCOLOR
+            ENDIF
+            PRINTFORM %SPACE(2)%
+        NEXT
+        PRINT |
+        FOR LCOUNT, 1, 5
+            PRINTFORM %SPACE(2)%
+            PRE = ENEMYMEMBER%TOSTR(LCOUNT)%
+            IF FLAG:PRE != 0
+                CALL BATTLE_SKILL_COMABLE_TARGET(FLAG:行动角色,FLAG:选择技能,2,LCOUNT)
+                IF FLAG:对象可选 == 1
+                    PRINTBUTTON @"[%LEN_STR(CALLNAME:(FLAG:PRE), 8)%]", 1010 + LCOUNT
+                ELSE
+                    CALL SET_COLOR("灰")
+                    PRINTFORM [%LEN_STR(CALLNAME:(FLAG:PRE), 8)%]
+                    RESETCOLOR
+                ENDIF
+            ELSE
+                CALL SET_COLOR("灰")
+                PRINTFORM [%LEN_STR("-", 8)%]
+                RESETCOLOR
+            ENDIF
+        NEXT
+    ELSE
+        FOR LCOUNT, 4, 0, -1
+            PRE = TEAMMEMBER%TOSTR(LCOUNT)%
+            IF FLAG:PRE != 0
                 CALL SET_COLOR("灰")
                 PRINTFORM [%LEN_STR(CALLNAME:(FLAG:PRE), 8)%]
                 RESETCOLOR
-            ENDIF
-        ELSE
-            CALL SET_COLOR("灰")
-            PRINTFORM [%LEN_STR("-", 8)%]
-            RESETCOLOR
-        ENDIF
-        PRINTFORM %SPACE(2)%
-    NEXT
-    PRINT |
-    FOR LCOUNT, 1, 5
-        PRINTFORM %SPACE(2)%
-        PRE = ENEMYMEMBER%TOSTR(LCOUNT)%
-        IF FLAG:PRE != 0
-            CALL BATTLE_SKILL_COMABLE_TARGET(FLAG:行动角色,FLAG:选择技能,2,LCOUNT)
-            IF FLAG:对象可选 == 1
-                PRINTBUTTON @"[%LEN_STR(CALLNAME:(FLAG:PRE), 8)%]", 1010 + LCOUNT
             ELSE
+                CALL SET_COLOR("灰")
+                PRINTFORM [%LEN_STR("-", 8)%]
+                RESETCOLOR
+            ENDIF
+            PRINTFORM %SPACE(2)%
+        NEXT
+        PRINT |
+        FOR LCOUNT, 1, 5
+            PRINTFORM %SPACE(2)%
+            PRE = ENEMYMEMBER%TOSTR(LCOUNT)%
+            IF FLAG:PRE != 0
                 CALL SET_COLOR("灰")
                 PRINTFORM [%LEN_STR(CALLNAME:(FLAG:PRE), 8)%]
                 RESETCOLOR
+            ELSE
+                CALL SET_COLOR("灰")
+                PRINTFORM [%LEN_STR("-", 8)%]
+                RESETCOLOR
             ENDIF
-        ELSE
-            CALL SET_COLOR("灰")
-            PRINTFORM [%LEN_STR("-", 8)%]
-            RESETCOLOR
-        ENDIF
-    NEXT
+        NEXT
+    ENDIF
+
     PRINTL
 
 
@@ -165,6 +198,7 @@
         PRE = ENEMYMEMBER%TOSTR(LCOUNT)%
         IF FLAG:PRE != 0
             PRINTFORM [%LEN_STR(CALLNAME:(FLAG:PRE), 8)%]
+            ;PRINTFORM [%LEN_STR(TOSTR(FLAG:PRE), 8)%]
         ELSE
             PRINTFORM [%LEN_STR("-", 8)%]
         ENDIF

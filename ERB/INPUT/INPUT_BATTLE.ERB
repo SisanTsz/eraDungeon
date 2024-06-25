@@ -4,6 +4,8 @@
     SELECTCASE RESULT
         CASE 1 TO 10
             FLAG:选择技能 = RESULT
+        CASE 12
+            FLAG:进行回合 = 1
         CASE 1000 TO 1004
             PRE = TEAMMEMBER%TOSTR(RESULT - 1000)%
             FLAG:选择对象 = FLAG:PRE

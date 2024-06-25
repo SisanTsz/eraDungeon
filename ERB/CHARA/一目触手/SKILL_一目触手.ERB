@@ -1,7 +1,11 @@
 @BATTLE_SKILL_1001(ARG:0)
     SELECTCASE ARG:0
         CASE 1
+            LOCAL = BATTLE_CHARA_DATA(FLAG:行动角色,"物理攻击")
+            CALL BATTLE_BASE_CHANGE(FLAG:选择对象,0-LOCAL,"体力")
+            PRINTL SKILLUSED
     ENDSELECT
+
 
 @BATTLE_SKILL_COMABLE_1001(ARG)
     #DIM SIT
@@ -9,14 +13,17 @@
     IF CFLAG:(FLAG:行动角色):TEAM == 2
         SELECTCASE ARG
             CASE 1
-                SIF BATTLE_CHECK_LOCATION(FLAG:行动角色,1,2)
+                SIF BATTLE_CHECK_LOCATION(FLAG:行动角色,1,2,3)
                     SIT += 1
-                SIF BATTLE_CHECK_ENEMY_LOCATION(1,1,2)
+                SIF BATTLE_CHECK_ENEMY_LOCATION(FLAG:行动角色,1,2,3)
                     SIT += 1
                 IF SIT == 2
                     FLAG:技能可选 = 1
+                    PRINTL 技能可选 = 1
                 ELSE
                     FLAG:技能可选 = 0
+                    PRINTL 技能可选 = 0
+
                 ENDIF
         ENDSELECT
     ENDIF
@@ -25,7 +32,7 @@
     SELECTCASE ARG:0
         CASE 1
             IF ARG:1 == 1
-                IF ARG:1 == 1 | ARG:1 == 2
+                IF ARG:2 == 1 || ARG:2 == 2 || ARG:2 == 3
                     FLAG:对象可选 = 1
                 ELSE
                     FLAG:对象可选 = 0

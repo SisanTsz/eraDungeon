@@ -1,6 +1,9 @@
 @CHECK_BATTLE
     #DIM LCOUNT
     #DIMS PRE 
+    #DIM LCOUNT_1
+    #DIMS PRE_1
+    $LOOP_1
     FLAG:失败 = 1
     FLAG:胜利 = 1
     IF FLAG:进行回合 == 1
@@ -16,31 +19,43 @@
             BREAK
         ENDIF
     NEXT
-    PRINTFORML {CHARANUM}
     FOR LCOUNT, 1, 5
         PRE = ENEMYMEMBER%TOSTR(LCOUNT)%
         IF FLAG:PRE != 0
             IF BASE:(FLAG:PRE):体力 > 0
                 FLAG:胜利 = 0
             ELSE
+                FOR LCOUNT_1, 1, 5
+                    PRE_1 = ENEMYMEMBER%TOSTR(LCOUNT_1)%
+                    IF FLAG:PRE_1 > FLAG:PRE
+                        FLAG:PRE_1 -= 1
+                    ENDIF
+                NEXT
+                DELCHARA FLAG:PRE
                 FLAG:PRE = 0
-                DELALLCHARA FLAG:PRE
             ENDIF
         ENDIF
     NEXT
     
-    ;敌方行动
-    IF CHARA_TO_NO(FLAG:行动角色) > 1000
-        CALL BATTLE_ENEMYMOVEMENT
-    ENDIF
-
-
     IF FLAG:失败 == 1 || FLAG:胜利 == 1
-        ;完成战斗
+        SIF FLAG:失败 == 1
+            PRINTL LOSE
+        SIF FLAG:胜利 == 1
+            PRINTL WIN
+        STR:GAMESTAGE = SLG
+        JUMP MAIN_UI
     ELSE
         CALL BATTLE_FIRST_PLAYER
     ENDIF
     
+
+    ;敌方行动
+    IF CHARA_TO_NO(FLAG:行动角色) > 1000
+        CALL BATTLE_ENEMYMOVEMENT
+        FLAG:进行回合 = 1
+        GOTO LOOP_1
+    ENDIF
+
 
 
 

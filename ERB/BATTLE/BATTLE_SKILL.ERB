@@ -34,6 +34,7 @@
             IF ARG:LCOUNT != 0
                 PRE = ENEMYMEMBER%TOSTR(LCOUNT)%
                 IF FLAG:PRE == ARG:0
+                    PRINTL YES
                     LOCAL = 1
                     BREAK
                 ENDIF
@@ -151,3 +152,9 @@
     ENDSELECT
             
 
+@SKILL_TO_NO(ARG:0,ARG:1) ;角色,技能
+    #FUNCTION
+    #DIMS PRE
+    PRE = SKILL%TOSTR(ARG:1)%
+    LOCAL = CFLAG:(ARG:0):PRE
+    RETURNF LOCAL
