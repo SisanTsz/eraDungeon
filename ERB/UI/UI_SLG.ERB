@@ -1,9 +1,16 @@
-@UI_SLG ;城镇UI
+;----------------------------------------------------------------
+; 城镇UI
+;----------------------------------------------------------------
+@UI_SLG
+    #DIMS htmlString
     CUSTOMDRAWLINE -
     CALL PRINT_LINE(20)
     CUSTOMDRAWLINE - 
-    PRINTBUTTONLC "招募", 1001
-    PRINTBUTTONLC "探索", 1002
+    htmlString = 
+    htmlString += get_button("招募", 1001, "这是招募按钮")
+    htmlString += get_space(6)
+    htmlString += get_button("探索", 1002, "这是探索按钮")
+    HTML_PRINT htmlString
 
 
 
