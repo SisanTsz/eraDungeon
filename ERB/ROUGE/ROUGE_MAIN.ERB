@@ -1,0 +1,37 @@
+@ROUGE_STAGE_START
+    FLAG:章节 = 1
+    FLAG:节点 = 1
+    CALL ROUGE_STAGE_RANDOM
+    CALL ROUGE_ROOM_RANDOM
+
+@ROUGE_STAGE_RANDOM
+    #DIM LCOUNT
+    #DIMS PRE
+    FOR LCOUNT, 1, 5
+        PRE = 房间%TOSTR(LCOUNT)%
+        FLAG:PRE = RAND:4
+    NEXT
+    CALL ROUGE_ROOM_RANDOM
+
+@ROUGE_ROOM_RANDOM
+    #DIM LCOUNT
+    #DIMS PRE
+    FOR LCOUNT, 1, 5
+        PRE = 房间编号%TOSTR(LCOUNT)%
+        FLAG:PRE = 1
+    NEXT
+
+@ROUGE_STAGE_ROOM_NAME(ARG:0)
+    #FUNCTIONS
+    SELECTCASE ARG:0
+        CASE 0
+            RETURNF "空"
+        CASE 1
+            RETURNF "战斗"
+        CASE 2
+            RETURNF "精英战斗"
+        CASE 3
+            RETURNF "事件"
+        CASE 99
+            RETURNF "BOSS"
+    ENDSELECT

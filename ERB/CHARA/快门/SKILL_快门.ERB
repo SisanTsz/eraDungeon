@@ -12,6 +12,7 @@
     SELECTCASE ARG:0
         CASE 1
             LOCAL = BATTLE_CHARA_DATA(FLAG:行动角色,"物理攻击")
+            SIF RAND:(BATTLE_CHARA_DATA(FLAG:行动角色,"命中")) > BATTLE_CHARA_DATA(FLAG:选择对象,"闪避")
             CALL BATTLE_BASE_CHANGE(FLAG:选择对象,0-LOCAL,"体力")
     ENDSELECT
 

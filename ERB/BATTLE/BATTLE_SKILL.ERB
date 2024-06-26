@@ -10,9 +10,7 @@
 
 @BATTLE_SKILL_COMABLE_TARGET(ARG:0,ARG:1,ARG:2,ARG:3)  ;角色, 角色技能, 队伍,位置
     CALLFORM BATTLE_SKILL_COMABLE_TARGET_{CHARA_TO_NO(ARG:0)}(ARG:1,ARG:2,ARG:3)
-
-
-
+    
 
 @BATTLE_CHECK_LOCATION(ARG:0,ARG:1,ARG:2,ARG:3,ARG:4) ;角色, 位置1/2/3/4
     #FUNCTION
@@ -158,3 +156,78 @@
     PRE = SKILL%TOSTR(ARG:1)%
     LOCAL = CFLAG:(ARG:0):PRE
     RETURNF LOCAL
+
+
+@BATTLE_MOVE(ARG:0,ARG:1)
+    #DIM LCOUNT 
+    #DIMS PRE 
+    #DIMS PRE_1
+    #DIM NUM
+    IF CFLAG:(ARG:0):TEAM == 1
+        IF CFLAG:(ARG:0):TEAMMEMBER < ARG:1
+            FOR LCOUNT, CFLAG:(ARG:0):TEAMMEMBER + 1, ARG:1 + 1
+                PRE = TEAMMEMBER%TOSTR(LCOUNT)%
+                PRE_1 = TEAMMEMBER%TOSTR(LCOUNT-1)%
+                FLAG:PRE_1 = FLAG:PRE
+                CFLAG:(FLAG:PRE_1):TEAMMEMBER -= 1
+            NEXT
+            PRE = TEAMMEMBER%TOSTR(ARG:1)%
+            FLAG:PRE = ARG:0
+            CFLAG:(ARG:0):TEAMMEMBER = ARG:1
+        ELSEIF CFLAG:(ARG:0):TEAMMEMBER > ARG:1
+            FOR LCOUNT, CFLAG:(ARG:0):TEAMMEMBER - 1, ARG:1 - 1, -1
+                PRE = TEAMMEMBER%TOSTR(LCOUNT)%
+                PRE_1 = TEAMMEMBER%TOSTR(LCOUNT+1)%
+                FLAG:PRE_1 = FLAG:PRE
+                CFLAG:(FLAG:PRE_1):TEAMMEMBER += 1
+            NEXT
+            PRE = TEAMMEMBER%TOSTR(ARG:1)%
+            FLAG:PRE = ARG:0
+            CFLAG:(ARG:0):TEAMMEMBER = ARG:1
+        ENDIF
+    ELSEIF CFLAG:(ARG:0):TEAM == 2
+        IF CFLAG:(ARG:0):TEAMMEMBER < ARG:1
+            FOR LCOUNT, CFLAG:(ARG:0):TEAMMEMBER + 1, ARG:1 + 1
+                PRE = ENEMYMEMBER%TOSTR(LCOUNT)%
+                PRE_1 = ENEMYMEMBER%TOSTR(LCOUNT-1)%
+                FLAG:PRE_1 = FLAG:PRE
+                CFLAG:(FLAG:PRE_1):TEAMMEMBER -= 1
+            NEXT
+            PRE = ENEMYMEMBER%TOSTR(ARG:1)%
+            FLAG:PRE = ARG:0
+            CFLAG:(ARG:0):TEAMMEMBER = ARG:1
+        ELSEIF CFLAG:(ARG:0):TEAMMEMBER > ARG:1
+            FOR LCOUNT, CFLAG:(ARG:0):TEAMMEMBER - 1, ARG:1 - 1, -1
+                PRE = ENEMYMEMBER%TOSTR(LCOUNT)%
+                PRE_1 = ENEMYMEMBER%TOSTR(LCOUNT+1)%
+                FLAG:PRE_1 = FLAG:PRE
+                CFLAG:(FLAG:PRE_1):TEAMMEMBER += 1
+            NEXT
+            PRE = ENEMYMEMBER%TOSTR(ARG:1)%
+            FLAG:PRE = ARG:0
+            CFLAG:(ARG:0):TEAMMEMBER = ARG:1
+        ENDIF
+    ENDIF
+                
+@BATTLE_EXCHANGE(ARG:0,ARG:1)
+    #DIMS PRE
+    #DIMS PRE_1
+    IF CFLAG:(ARG:0):TEAM == CFLAG:(ARG:1):TEAM
+        IF CFLAG:(ARG:0):TEAM == 1
+            PRE = TEAMMEMBER%TOSTR(CFLAG:(ARG:0):TEAMMEMBER)%
+            PRE_1 = TEAMMEMBER%TOSTR(CFLAG:(ARG:1):TEAMMEMBER)%
+            LOCAL = CFLAG:(ARG:0):TEAMMEMBER
+            CFLAG:(ARG:0):TEAMMEMBER = CFLAG:(ARG:1):TEAMMEMBER
+            CFLAG:(ARG:1):TEAMMEMBER = LOCAL
+            FLAG:PRE = ARG:1
+            FLAG:PRE_1 = ARG:0
+        ELSEIF CFLAG:(ARG:0):TEAM == 2
+            PRE = ENEMYMEMBER%TOSTR(CFLAG:(ARG:0):ENEMYMEMBER)%
+            PRE_1 = ENEMYMEMBER%TOSTR(CFLAG:(ARG:1):ENEMYMEMBER)%
+            LOCAL = CFLAG:(ARG:0):TEAMMEMBER
+            CFLAG:(ARG:0):TEAMMEMBER = CFLAG:(ARG:1):TEAMMEMBER
+            CFLAG:(ARG:1):TEAMMEMBER = LOCAL
+            FLAG:PRE = ARG:1
+            FLAG:PRE_1 = ARG:0
+        ENDIF
+    ENDIF

@@ -1,0 +1,86 @@
+;施法者,对象,数值,持续时间,实数or%,buff名称,影响的数值
+@BUFF_ADD(ARG:0,ARG:1,ARG:2,ARG:3,ARG:4,ARGS:0,ARGS:1)
+    IF ARG:0 != 0
+        CALL BUFF_PUSH(ARG:1,ARG:2,ARG:3,ARG:4,ARGS:0,ARGS:1)
+    ENDIF
+
+;对象,数值,持续回合,实数or%,buff名称,影响的数值
+@BUFF_PUSH(ARG:0,ARG:1,ARG:2,ARG:3,ARGS:0,ARGS:1)
+    #DIMS PRE
+    #DIMS PRE_1
+    #DIM LCOUNT
+    #DIMS CODE
+    FOR LCOUNT, 50, 1, -1
+        PRE = BUFF%TOSTR(LCOUNT)%
+        PRE_1 = BUFF%TOSTR(LCOUNT-1)%
+        CSTR:(ARG:0):PRE = CSTR:(ARG:0):PRE_1
+    NEXT
+    CODE = %TOSTR(ARG:1)%.%TOSTR(ARG:2)%.%TOSTR(ARG:3)%
+    CODE = %CODE%.%ARGS:0%.%ARGS:1%
+    CSTR:(ARG:0):BUFF1 = %CODE%
+
+@BUFF_PASS(ARG:0)
+    #DIM LCOUNT
+    #DIM LCOUNT_1
+    #DIMS PRE
+    #DIM NUM
+    #DIMS CODE
+    FOR LCOUNT_1, 1, 51
+        PRE = BUFF%TOSTR(LCOUNT_1)%
+        IF CSTR:(ARG:0):PRE != ""
+            SPLIT CSTR:(ARG:0):PRE, ".", LOCALS
+            NUM = {TOINT(LOCALS:1)} - 1
+            CODE = %LOCALS:0%.%TOSTR(NUM)%.%LOCALS:2%.%LOCALS:3%.%LOCALS:4%
+            CSTR:(ARG:0):PRE = %CODE%
+        ENDIF
+    NEXT
+    CALL BUFF_UPDATE
+
+@BUFF_UPDATE(ARG:0)
+    #DIM LCOUNT
+    #DIM LCOUNT_1
+    #DIMS PRE
+    #DIM NUM
+    #DIMS CODE
+    #DIMS PRE_1
+    #DIMS PRE_2
+    #DIMS PRE_3
+    #DIM LCOUNT_2
+    #DIM LCOUNT_3
+    #DIM CLOOP
+    FOR LCOUNT, 0, CHARANUM
+        FOR LCOUNT_1, 1, 51
+            PRE = BUFF%TOSTR(LCOUNT_1)%
+            IF CSTR:(ARG:0):PRE != ""
+                SPLIT CSTR:(ARG:0):PRE, ".", LOCALS
+                IF TOINT(LOCALS:1) == 0
+                    CSTR:(ARG:0):PRE = ""
+                ENDIF
+            ENDIF
+        NEXT
+    NEXT
+    $LOOP_1
+    CLOOP = 0
+    FOR LCOUNT, 0, CHARANUM
+        FOR LCOUNT_1, 50, 0, -1
+            PRE = BUFF%TOSTR(LCOUNT_1)%
+            IF CSTR:(LCOUNT):PRE != ""
+                FOR LCOUNT_2, LCOUNT_1 - 1, 1, -1
+                    PRE_1 = BUFF%TOSTR(LCOUNT_2)%
+                    IF CSTR:(LCOUNT):PRE_1 == ""
+                        FOR LCOUNT_3, LCOUNT_2 + 1, LCOUNT_1 + 1
+                            PRE_2 = BUFF%TOSTR(LCOUNT_3)%
+                            PRE_3 = BUFF%TOSTR(LCOUNT_3-1)
+                            CSTR:(ARG:0):PRE_3 = CSTR:(ARG:0):PRE_2
+                        NEXT
+                        CLOOP = 1
+                        BREAK
+                        BREAK
+                        BREAK
+                    ENDIF
+                NEXT
+            ENDIF
+        NEXT
+    NEXT
+    SIF CLOOP == 1
+        GOTO LOOP_1
