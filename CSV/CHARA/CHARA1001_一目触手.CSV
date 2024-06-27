@@ -47,14 +47,14 @@ BASE,Ａ名器,0
 BASE,Ｆ名器,0
 BASE,Ｓ名器,0
 
-CSTR,SKILLNAME1,触手攻击
-CSTR,SKILLNAME2,触手横扫
-CSTR,SKILLNAME3,蠢蠢欲动
-CSTR,SKILLNAME4,情欲骚动
-CSTR,SKILLNAME5,Ｍ触摸
-CSTR,SKILLNAME6,Ｂ触摸
-CSTR,SKILLNAME7,Ｃ触摸
-CSTR,SKILLNAME8,Ｓ触摸
+CSTR,技能名称1,触手攻击
+CSTR,技能名称2,触手横扫
+CSTR,技能名称3,蠢蠢欲动
+CSTR,技能名称4,情欲骚动
+CSTR,技能名称5,Ｍ触摸
+CSTR,技能名称6,Ｂ触摸
+CSTR,技能名称7,Ｃ触摸
+CSTR,技能名称8,Ｓ触摸
 
 CFLAG,编号,1001
 CFLAG,SKILL1,0

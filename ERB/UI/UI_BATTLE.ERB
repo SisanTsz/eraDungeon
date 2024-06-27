@@ -68,7 +68,7 @@
     FOR LCOUNT, 1, 5
         PRE = SKILL%TOSTR(LCOUNT)%
         IF CFLAG:(FLAG:行动角色):PRE != 0
-            PRE = SKILLNAME%TOSTR(CFLAG:(FLAG:行动角色):PRE)%
+            PRE = 技能名称%TOSTR(CFLAG:(FLAG:行动角色):PRE)%
             CALL BATTLE_SKILL_COMABLE(FLAG:行动角色,LCOUNT)
             IF FLAG:技能可选 == 1
                 IF LCOUNT == FLAG:选择技能

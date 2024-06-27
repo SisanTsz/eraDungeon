@@ -1,0 +1,19 @@
+;作战前准备
+;选择队伍
+;选择肉鸽模式
+;选择目标
+@UI_ROUGE_PRE
+    #DIM LCOUNT
+    CALL TITLE_BAR("作战准备")
+    PRINTL 作战模式
+    CALL SET_COLOR("灰")
+    CALL PRINT_BUTTON("地牢",8)
+    RESETCOLOR
+    IF STR:GAMEMODE == "EXPLORE"
+        CALL SET_COLOR("黄")
+        CALL PRINT_BUTTON("探索",8,1001)
+        RESETCOLOR
+    ELSE
+        CALL PRINT_BUTTON("探索",8,1001)
+    ENDIF
+    CALL PRINT_LINE(10)

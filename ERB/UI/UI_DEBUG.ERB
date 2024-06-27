@@ -1,11 +1,7 @@
 ;进行一个DEBUG面板的提前建立
 @UI_DEBUG
     #DIMS htmlString
-    CUSTOMDRAWLINE -
-    ALIGNMENT CENTER
-    PRINTL DEBUG面板
-    ALIGNMENT LEFT
-    CUSTOMDRAWLINE -
+    CALL TITLE_BAR("DEBUG面板")
     PRINTL GAMESTAGE转跳
     PRINTL
     htmlString = %get_button("SLG", 1001, "进入城镇")%
