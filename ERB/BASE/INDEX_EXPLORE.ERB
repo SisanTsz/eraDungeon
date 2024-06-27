@@ -1,0 +1,29 @@
+@INDEX_EXPLORE(ARGS)
+    #FUNCTION
+    #DIM INDEX
+    SELECTCASE ARGS
+        CASE "ID"
+            INDEX = 0
+        CASE "事件类型"
+            INDEX = 1
+        CASE "剧情包名"
+            INDEX = 2
+        CASE "包内名"
+            INDEX = 3
+        CASE "名称"
+            INDEX = 4
+        ;以下的都不懂怎么实现(傻)
+        ;但先抄了
+        CASE "激活条件"
+            INDEX = 5
+        CASE "响应条件"
+            INDEX = 6
+        CASE "待解析文本"
+            INDEX = 7
+        CASE "选项列表"
+            INDEX = 8
+        CASEELSE
+            INDEX = -1
+    ENDSELECT
+    RETURNF INDEX
+

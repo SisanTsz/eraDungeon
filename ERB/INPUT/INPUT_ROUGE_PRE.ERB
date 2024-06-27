@@ -1,0 +1,10 @@
+@INPUT_ROUGE_PRE
+    SELECTCASE RESULT
+        CASE 1001
+            STR:GAMEMODE = EXPLORE
+        CASE 2001
+            STR:GAMESTAGE = ROUGE
+            IF STR:GAMEMODE == "EXPLORE"
+                CALL EXPLORE_START
+            ENDIF
+    ENDSELECT

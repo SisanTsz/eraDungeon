@@ -16,3 +16,25 @@
 ; 技能非数值属性
 #DIMS SKILL_OBJ, SKILL_ENTITY_MAX, SKILL_COMPONENT_MAX
 
+;----------------------------------------------------------------
+; 探索地图:事件定义
+;----------------------------------------------------------------
+#DIM CONST 未激活 = 0
+#DIM CONST 已激活 = 1
+#DIM CONST 进行中 = 2
+#DIM CONST 已结束 = 3
+#DIM CONST 被移除 = 4
+#DIM CONST 随机事件 = 0
+#DIM CONST 角色专属事件 = 1
+#DIM CONST 剧情事件 = 2
+#DIM CONST 固定事件 = 3
+
+; 声明事件数据
+; 事件实体上限
+#DIM CONST EXPLORE_EVENT_ENTITY_MAX = 100
+; 事件组件上限
+#DIM CONST EXPLORE_EVENT_COMPONENT_MAX = 8
+; 事件数值属性
+#DIM EXPLORE_EVENT_NUM, EXPLORE_EVENT_ENTITY_MAX, EXPLORE_EVENT_COMPONENT_MAX
+; 事件非数值属性
+#DIMS EXPLORE_EVENT_OBJ, EXPLORE_EVENT_ENTITY_MAX, EXPLORE_EVENT_COMPONENT_MAX

@@ -6,14 +6,28 @@
     #DIM LCOUNT
     CALL TITLE_BAR("作战准备")
     PRINTL 作战模式
-    CALL SET_COLOR("灰")
-    CALL PRINT_BUTTON("地牢",8)
-    RESETCOLOR
+    ;地牢模式关闭
+    CALL PRINT_BUTTON_CANCELLED("地牢",8)
     IF STR:GAMEMODE == "EXPLORE"
         CALL SET_COLOR("黄")
-        CALL PRINT_BUTTON("探索",8,1001)
+        CALL PRINT_BUTTON_SELECTED("探索",8)
         RESETCOLOR
     ELSE
         CALL PRINT_BUTTON("探索",8,1001)
+    ENDIF
+
+    PRINTL
+    PRINTL 难度选择
+    CALL PRINT_BUTTON_SELECTED("1",8)
+
+    PRINTL
+    PRINTL
+    CALL PRINT_BUTTON_CANCELLED("管理队伍",8)
+    PRINTL
+    PRINTL
+    IF FLAG:难度 != 0 && STR:GAMEMODE != ""
+        CALL PRINT_BUTTON("开始",8,2001)
+    ELSE
+        CALL PRINT_BUTTON_CANCELLED("开始",8)
     ENDIF
     CALL PRINT_LINE(10)
