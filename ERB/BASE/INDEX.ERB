@@ -1,0 +1,63 @@
+﻿;----------------------------------------------------------------
+; 返回注册编号
+;----------------------------------------------------------------
+@INDEX(word)
+#FUNCTION
+#DIMS word
+#DIM index
+SELECTCASE word
+    ; 技能组件
+    CASE "名称"
+        index = 0
+    CASE "标签"
+        index = 1
+    CASE "位置要求"
+        index = 2
+    CASE "可选对象"
+        index = 3
+    CASE "效果范围"
+        index = 4
+    CASE "可用次数"
+        index = 5
+    CASE "冷却时间"
+        index = 6
+    CASE "物理伤害系数"
+        index = 7
+    CASE "法术伤害系数"
+        index = 8
+    CASE "物理防御修正"
+        index = 9
+    CASE "法术防御修正"
+        index = 10
+    CASE "命中率修正"
+        index = 11
+    CASE "闪避率修正"
+        index = 12
+    CASE "暴击率修正"
+        index = 13
+    CASE "暴击伤害修正"
+        index = 14
+    CASE "体力"
+        index = 15
+    CASE "性欲"
+        index = 16
+    CASE "快感"
+        index = 17
+    CASE "肉体抗性修正"
+        index = 18
+    CASE "精神抗性修正"
+        index = 19
+    CASE "异常抗性修正"
+        index = 20
+    CASE "药毒抗性修正"
+        index = 21
+    CASE "性奋抗性修正"
+        index = 22
+    CASE "位移抗性修正"
+        index = 23
+    CASE "流血抗性修正"
+        index = 24
+	CASEELSE
+		index = -1
+ENDSELECT
+RETURNF index

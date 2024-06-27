@@ -1,0 +1,42 @@
+﻿;----------------------------------------------------------------
+; 技能配置示例（下面的各种LIB还没定义）
+;----------------------------------------------------------------
+@BATTLE_SKILL_1001(skill_ID, method)
+#DIM skill_ID
+#DIMS method
+
+SELECTCASE method
+	CASE "描述"
+		VARSET RESULTS
+		RESULTS:0 = 物理攻击x100%, 前进1
+		RESULTS:1 = 物理攻击:{BATTLE_CHARA_DATA(1,"物理攻击")}
+		RESULTS:2 = 暴击率:{BATTLE_CHARA_DATA(1,"暴击率")}%"%"%
+		RESULTS:3 = 命中:{BATTLE_CHARA_DATA(1,"命中")}
+		RESULTS:4 = 
+
+	; 用于初始化的静态数据
+	; 不是所有字段都必填，比如技能没有位移，就可以不配置这一行，运行时会FINDELEMENT，如果找不到就判定为没有位移
+	; 技能就像用积木拼装起来一样
+	CASE "读取"
+		; 技能名
+		SKILL_OBJ:skill_ID:INDEX("名称")			= 快门
+		; 技能标签，用于做各种判断
+		SKILL_OBJ:skill_ID:INDEX("标签")			= 法术
+		; 约定负数为友方，正数为敌方
+		SKILL_OBJ:skill_ID:INDEX("可选对象")		= 1,2,3
+		; 先只考虑两种情况：0所有, 1单体
+		SKILL_NUM:skill_ID:INDEX("效果范围")		= 单体
+		; 一场战斗内，技能的可用次数，约定-1为无限
+		SKILL_NUM:skill_ID:INDEX("可用次数")		= -1
+		; 物理攻击伤害系数，单位是百分比
+		SKILL_NUM:skill_ID:INDEX("法术伤害系数")	= 100
+		; 命中率修正系数，单位是百分比，做加算
+		SKILL_NUM:skill_ID:INDEX("命中率修正")		= 0
+		; 暴击率修正系数，单位是百分比，做加算
+		SKILL_NUM:skill_ID:INDEX("暴击率修正")		= 0
+		; 技能是否产生位移，正数为向前排移动
+		SKILL_NUM:skill_ID:INDEX("位移")			= 1
+
+	CASEELSE
+ENDSELECT
+RETURN

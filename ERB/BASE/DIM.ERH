@@ -1,0 +1,18 @@
+﻿;----------------------------------------------------------------
+; 初始化定义
+;----------------------------------------------------------------
+
+; Define用
+#DIM CONST 所有 = 0
+#DIM CONST 单体 = 1
+
+; 声明技能数据
+; 技能实体上限
+#DIM CONST SKILL_ENTITY_MAX = 100
+; 技能组件上限
+#DIM CONST SKILL_COMPONENT_MAX = 42
+; 技能数值属性
+#DIM SKILL_NUM, SKILL_ENTITY_MAX, SKILL_COMPONENT_MAX
+; 技能非数值属性
+#DIMS SKILL_OBJ, SKILL_ENTITY_MAX, SKILL_COMPONENT_MAX
+
