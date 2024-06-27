@@ -1,0 +1,21 @@
+;进行一个DEBUG面板的提前建立
+@UI_DEBUG
+    #DIMS htmlString
+    CUSTOMDRAWLINE -
+    ALIGNMENT CENTER
+    PRINTL DEBUG面板
+    ALIGNMENT LEFT
+    CUSTOMDRAWLINE -
+    PRINTL GAMESTAGE转跳
+    PRINTL
+    htmlString = %get_button("SLG", 1001, "进入城镇")%
+    HTML_PRINT htmlString
+    PRINTL
+    htmlString = %get_button("ROUGE_PRE", 1002, "进入作战前准备界面")%
+    HTML_PRINT htmlString
+    PRINTL
+    htmlString = %get_button("BATTLE", 1003, "进入战斗测试")%
+    HTML_PRINT htmlString
+    CALL PRINT_LINE(20)
+    CUSTOMDRAWLINE -
+    PRINTL

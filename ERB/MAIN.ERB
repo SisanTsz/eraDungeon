@@ -1,9 +1,16 @@
 @MAIN_UI
     SELECTCASE STR:GAMESTAGE
+        CASE "DEBUG"
+            CALL UI_DEBUG
         CASE "SLG"
             CALL UI_SLG
         CASE "ROUGE"
-            CALL UI_ROUGE
+            SELECTCASE STR:GAMEMODE
+                ;探索周围/爬塔
+                CASE "EXPLORE"
+                    CALL UI_EXPLORE
+                ;CASE "DUNGEON"
+            ENDSELECT
         CASE "BATTLE"
             CALL UI_BATTLE
         CASE "ROUGE_PRE"
@@ -14,6 +21,8 @@
 
 @MAIN_INPUT
     SELECTCASE STR:GAMESTAGE
+        CASE "DEBUG"
+            CALL INPUT_DEBUG
         CASE "SLG"
             CALL INPUT_SLG
         CASE "ROUGE"
