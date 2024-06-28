@@ -6,15 +6,34 @@
 #DIM CONST 所有 = 0
 #DIM CONST 单体 = 1
 
-; 声明技能数据
+;----------------------------------------------------------------
+; 角色系统
+;----------------------------------------------------------------
+; 角色实体上限
+#DIM CONST CHARA_ENTITY_MAX = 1000
+; 角色组件上限
+#DIM CONST CHARA_COMPONENT_MAX = 10
+; 角色非数值属性
+#DIMS CHARA_OBJ, CHARA_ENTITY_MAX, CHARA_COMPONENT_MAX
+
+;----------------------------------------------------------------
+; 技能系统
+;----------------------------------------------------------------
 ; 技能实体上限
-#DIM CONST SKILL_ENTITY_MAX = 100
+#DIM CONST SKILL_ENTITY_MAX = 200
 ; 技能组件上限
 #DIM CONST SKILL_COMPONENT_MAX = 42
 ; 技能数值属性
 #DIM SKILL_NUM, SKILL_ENTITY_MAX, SKILL_COMPONENT_MAX
 ; 技能非数值属性
 #DIMS SKILL_OBJ, SKILL_ENTITY_MAX, SKILL_COMPONENT_MAX
+
+; 声明角色的技能列表
+; 暂时没有启用
+#DIM CONST BATTLE_SKILL_MAX = 4
+#DIM CONST ERO_SKILL_MAX = 4
+#DIM BATTLE_SKILL_LIST, CHARA_ENTITY_MAX, BATTLE_SKILL_MAX
+#DIM ERO_SKILL_LIST, CHARA_ENTITY_MAX, ERO_SKILL_MAX
 
 ;----------------------------------------------------------------
 ; 探索地图:事件定义

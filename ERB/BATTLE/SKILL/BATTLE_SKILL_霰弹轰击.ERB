@@ -1,7 +1,7 @@
 ﻿;----------------------------------------------------------------
-; 切割
+; 霰弹轰击
 ;----------------------------------------------------------------
-@BATTLE_SKILL_1002(skill_ID, method, chara_ID = 0)
+@BATTLE_SKILL_1003(skill_ID, method, chara_ID = 0)
 #DIM skill_ID
 #DIM chara_ID
 #DIMS method
@@ -9,22 +9,20 @@
 SELECTCASE method
 	CASE "描述"
 		VARSET RESULTS
-		RESULTS:0 = 必须切割了！
+		RESULTS:0 = 吃我一发葡萄弹吧！
 		RESULTS:1 = 物理攻击:{BATTLE_CHARA_DATA(chara_ID,"物理攻击")}
 		RESULTS:2 = 暴击率:{BATTLE_CHARA_DATA(chara_ID,"暴击率")}%"%"%
 		RESULTS:3 = 命中:{BATTLE_CHARA_DATA(chara_ID,"命中")}
 		RESULTS:4 = 
 
 	CASE "读取"
-		SKILL_OBJ:skill_ID:INDEX("名称")			= 切割
-		SKILL_OBJ:skill_ID:INDEX("标签")			= 物理,斩击
+		SKILL_OBJ:skill_ID:INDEX("名称")			= 霰弹轰击
+		SKILL_OBJ:skill_ID:INDEX("标签")			= 物理,打击
 		SKILL_OBJ:skill_ID:INDEX("位置要求")		= -1,-2
 		SKILL_OBJ:skill_ID:INDEX("可选对象")		= 1,2
-		SKILL_NUM:skill_ID:INDEX("效果范围")		= 单体
-		SKILL_NUM:skill_ID:INDEX("可用次数")		= -1
-		SKILL_NUM:skill_ID:INDEX("物理伤害系数")	= 125
-		SKILL_NUM:skill_ID:INDEX("命中率修正")		= -15
-		SKILL_NUM:skill_ID:INDEX("暴击率修正")		= 25
+		SKILL_NUM:skill_ID:INDEX("效果范围")		= 所有
+		SKILL_NUM:skill_ID:INDEX("物理伤害系数")	= 50
+		SKILL_NUM:skill_ID:INDEX("暴击率修正")		= -10
 
 	CASEELSE
 ENDSELECT

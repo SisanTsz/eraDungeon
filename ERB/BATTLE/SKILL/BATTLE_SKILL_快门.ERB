@@ -1,17 +1,18 @@
 ﻿;----------------------------------------------------------------
 ; 技能配置示例（下面的各种LIB还没定义）
 ;----------------------------------------------------------------
-@BATTLE_SKILL_1001(skill_ID, method)
+@BATTLE_SKILL_1001(skill_ID, method, chara_ID = 0)
 #DIM skill_ID
+#DIM chara_ID
 #DIMS method
 
 SELECTCASE method
 	CASE "描述"
 		VARSET RESULTS
-		RESULTS:0 = 物理攻击x100%, 前进1
-		RESULTS:1 = 物理攻击:{BATTLE_CHARA_DATA(1,"物理攻击")}
-		RESULTS:2 = 暴击率:{BATTLE_CHARA_DATA(1,"暴击率")}%"%"%
-		RESULTS:3 = 命中:{BATTLE_CHARA_DATA(1,"命中")}
+		RESULTS:0 = 法术攻击x{SKILL_NUM:skill_ID:INDEX("法术伤害系数")}%, 前进{SKILL_NUM:skill_ID:INDEX("位移")}
+		RESULTS:1 = 法术攻击:{BATTLE_CHARA_DATA(chara_ID,"法术攻击")}
+		RESULTS:2 = 暴击率:{BATTLE_CHARA_DATA(chara_ID,"暴击率")}%"%"%
+		RESULTS:3 = 命中:{BATTLE_CHARA_DATA(chara_ID,"命中")}
 		RESULTS:4 = 
 
 	; 用于初始化的静态数据

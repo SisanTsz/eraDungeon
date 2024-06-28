@@ -1,0 +1,29 @@
+﻿;----------------------------------------------------------------
+; 强效催情淫雾
+;----------------------------------------------------------------
+@BATTLE_SKILL_2001(skill_ID, method, chara_ID = 0)
+#DIM skill_ID
+#DIM chara_ID
+#DIMS method
+
+SELECTCASE method
+	CASE "描述"
+		VARSET RESULTS
+		RESULTS:0 = 测试色情技能！
+		RESULTS:1 = 对敌方{SKILL_NUM:skill_ID:INDEX("效果范围")}造成{SKILL_NUM:skill_ID:INDEX("性欲")}性欲伤害
+		RESULTS:2 = 命中率:{BATTLE_CHARA_DATA(chara_ID,"命中")}%"%"%
+		RESULTS:3 = 
+		RESULTS:4 = 
+
+	CASE "读取"
+		SKILL_OBJ:skill_ID:INDEX("名称")			= 强效催情淫雾
+		SKILL_OBJ:skill_ID:INDEX("标签")			= 色情,群体,魔法,雾气
+		SKILL_OBJ:skill_ID:INDEX("位置要求")		= -3,-4
+		SKILL_OBJ:skill_ID:INDEX("可选对象")		= 1,2,3,4
+		SKILL_NUM:skill_ID:INDEX("效果范围")		= 所有
+		SKILL_NUM:skill_ID:INDEX("性欲")			= 30
+		SKILL_NUM:skill_ID:INDEX("命中率修正")		= -20
+
+	CASEELSE
+ENDSELECT
+RETURN
