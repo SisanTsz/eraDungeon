@@ -47,6 +47,14 @@ BASE,Ａ名器,12
 BASE,Ｆ名器,15
 BASE,Ｓ名器,10
 
+CSTR,技能名称1,
+CSTR,技能名称2,
+CSTR,技能名称3,
+CSTR,技能名称4,
+CSTR,技能名称5,
+CSTR,技能名称6,
+CSTR,技能名称7,
+CSTR,技能名称8,
 
 CFLAG,编号,1
 ; 初始技能列表
