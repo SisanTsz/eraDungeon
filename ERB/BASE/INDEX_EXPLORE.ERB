@@ -1,4 +1,4 @@
-@INDEX_EXPLORE(ARGS)
+@INDEX_EXPLORE_EVENT(ARGS)
     #FUNCTION
     #DIM INDEX
     SELECTCASE ARGS
@@ -27,3 +27,29 @@
     ENDSELECT
     RETURNF INDEX
 
+@INDEX_EXPLORE(ARGS)
+    #FUNCTION
+    #DIM INDEX
+    SELECTCASE ARGS
+        CASE "名字"
+            INDEX = 0
+        CASE "类型"
+            INDEX = 1
+        CASEELSE
+            INDEX = -1
+    ENDSELECT
+    RETURNF INDEX
+
+
+@INDEX_EXPLORE_ROOM(ARGS)
+    #FUNCTION
+    #DIM INDEX
+    SELECTCASE ARGS
+        CASE "名称"
+            INDEX = 0
+        CASE "描述"
+            INDEX = 1
+        CASEELSE
+            INDEX = -1
+    ENDSELECT
+    RETURNF INDEX

@@ -11,8 +11,9 @@
             RESULTS:0 = 这是一个测试事件
         CASE "读取"
             ;事件名
-            EXPLORE_EVENT_OBJ:event_id:INDEX("名称")    = 测试事件
-            EXPLORE_EVENT_OBJ:event_id:INDEX("事件类型") = 固定事件
+            EXPLORE_EVENT_OBJ:event_id:INDEX_EXPLORE_EVENT("名称")    = 测试事件
+            EXPLORE_EVENT_OBJ:event_id:INDEX_EXPLORE_EVENT("事件类型") = 固定事件
         CASEELSE
     ENDSELECT
     RETURN
+    

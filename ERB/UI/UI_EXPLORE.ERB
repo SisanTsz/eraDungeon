@@ -1,5 +1,34 @@
 @UI_EXPLORE
     CALL TITLE_BAR("探索中")
     CALL PRINT_PINK_FOG
+    CALL UI_EXPLORE_STAGE
+    CALL UI_EXPLORE_ROOM
     CALL PRINT_LINE(20)
-    CALL BATTLE_MESSAGE
+
+@UI_EXPLORE_STAGE
+    #DIM LCOUNT
+    #DIMS location
+    location = %TOSTR(FLAG:章节)% - %TOSTR(FLAG:节点)%
+    ALIGNMENT CENTER
+    PRINTFORM %LEN_STR(location, 8)%
+    CALL PRINT_LINE(2)
+    FOR LCOUNT, 1, FLAG:目标节点 + 1
+        location = %TOSTR(FLAG:章节)% - %TOSTR(LCOUNT)%
+        IF LCOUNT == FLAG:节点
+            CALL PRINT_BUTTON_SELECTED(location, 8)
+        ELSEIF LCOUNT < FLAG:节点
+            CALL PRINT_BUTTON_CANCELLED(location, 8)
+        ELSE
+            PRINTFORM [%LEN_STR(location, 8)%]
+        ENDIF
+    NEXT
+    CALL PRINT_LINE(2)
+    CUSTOMDRAWLINE -
+    ALIGNMENT LEFT
+
+@UI_EXPLORE_ROOM
+    #DIM LCOUNT
+    ALIGNMENT CENTER
+    FOR LCOUNT, 1, 4
+        PRINTFORM %EXPLORE_ROOM_OBJ:LCOUNT:INDEX_EXPLORE("名字")% 
+    NEXT

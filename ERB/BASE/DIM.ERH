@@ -36,6 +36,21 @@
 #DIM ERO_SKILL_LIST, CHARA_ENTITY_MAX, ERO_SKILL_MAX
 
 ;----------------------------------------------------------------
+; 探索地图:房间定义
+;----------------------------------------------------------------
+#DIM CONST 事件 = 1
+#DIM CONST 战斗 = 2
+
+; 声明房间数据
+; 房间实体上限
+#DIM CONST EXPLORE_ROOM_ENTITY_MAX = 4
+; 房间组件上限
+#DIM CONST EXPLORE_ROOM_COMPONENT_MAX = 2
+; 房间数值属性
+#DIM EXPLORE_ROOM_NUM, EXPLORE_ROOM_ENTITY_MAX, EXPLORE_ROOM_COMPONENT_MAX
+; 房间非数值属性
+#DIMS EXPLORE_ROOM_OBJ, EXPLORE_ROOM_ENTITY_MAX, EXPLORE_ROOM_COMPONENT_MAX
+;----------------------------------------------------------------
 ; 探索地图:事件定义
 ;----------------------------------------------------------------
 #DIM CONST 未激活 = 0
