@@ -1,0 +1,1 @@
+start "" "Emuera1824+v21+EMv18+EEv47.exe" -debug
