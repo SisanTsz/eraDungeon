@@ -1,0 +1,82 @@
+;----------------------------------------------------------------
+; 判断chara_ID是否可使用skill_ID技能
+;----------------------------------------------------------------
+@BATTLE_SKILL_AVAILABLE(chara_ID, skill_ID)
+#FUNCTION
+    #DIM chara_ID
+    #DIM skill_ID
+    #DIM ret
+    #DIM inPlayerTeam
+    #DIM factor
+    #DIM objCount
+
+    ; 判断是否冷却
+    IF !Skill_is_CoolDown(skill_ID)
+        ErrorInfo = "技能尚未冷却"
+        RETURNF FALSE
+    ENDIF
+
+    inPlayerTeam = % CFLAG:chara_ID:TEAM == 1 ? 1 # 0 %
+
+    ; 判断位置需求 角色ID, 范围列表, 是否是玩家队员
+    ret = Battle_Chara_On_Range(chara_ID, SKILL_OBJ:skill_ID:INDEX("位置要求"), inPlayerTeam)
+    IF ret == 0
+        ErrorInfo = "站位不符合要求"
+        RETURNF FALSE
+    ENDIF
+
+    ; 判断技能的特殊要求。比如效果描述里写：场上有其它六武众时才能发动。因为没有设计这样的技能，所以暂时留空
+
+    ; 判断目标需求
+    ; 玩家队伍的正数目标，指向敌人队伍；负数目标指向玩家队伍。
+    ; 敌人队伍的正数目标，指向玩家队伍；负数目标指向敌人队伍。
+    factor = % inPlayerTeam ? 1 # -1 %
+    SPLIT SKILL_OBJ:skill_ID:INDEX("可选对象") "," LOCALS
+    objCount = RESULT
+    REPEAT objCount
+        IF TOINT(LOCALS:COUNT) * factor > 0
+            LOCAL = ABS(LOCALS:COUNT)
+            SIF ENEMY_POS:(chara_ID:LOCAL) > 0
+                ; 找到任一目标
+                RETURNF TRUE
+        ELSEIF LOCAL:COUNT * factor < 0
+            LOCAL = ABS(LOCALS:COUNT)
+            SIF PLAYER_POS:(chara_ID:LOCAL) > 0
+                ; 找到任一目标
+                RETURNF TRUE
+        ENDIF
+    REND
+    ErrorInfo = "找不到技能目标"
+    RETURNF FALSE
+
+; 技能是否冷却
+@Skill_is_CoolDown(skill_ID)
+#FUNCTION
+    #DIM skill_ID
+
+    SIF SKILL_NUM:skill_ID:INDEX("剩余冷却") > 0
+        RETURNF FALSE
+    RETURNF TRUE
+
+
+;----------------------------------------------------------------
+; 判断chara_ID是否在指定range内，如果isPlayer不是1，那么区域需要取反
+;----------------------------------------------------------------
+@Battle_Chara_On_Range(chara_ID, range, isPlayer = TRUE)
+#FUNCTION
+    #DIM chara_ID
+    #DIMS range
+    #DIM isPlayer
+
+    SIF isPlayer != 1
+        isPlayer = -1
+    SPLIT range ",", LOCALS
+    ; 如果范围是空的，说明没配置范围，约定为全范围
+    SIF RESULT == 0
+        RETURNF TRUE
+    REPEAT RESULT
+        IF BATTLE_POS(chara_ID) == TOINT(LOCALS:COUNT) * isPlayer
+            RETURNF TRUE
+        ENDIF
+    REND
+    RETURNF FALSE

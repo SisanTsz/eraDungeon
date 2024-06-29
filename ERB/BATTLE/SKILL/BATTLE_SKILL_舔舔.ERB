@@ -1,0 +1,27 @@
+﻿;----------------------------------------------------------------
+; 强效催情淫雾
+;----------------------------------------------------------------
+@BATTLE_SKILL_2002(skill_ID, method, chara_ID = 0)
+#DIM skill_ID
+#DIM chara_ID
+#DIMS method
+
+SELECTCASE method
+	CASE "描述"
+		VARSET RESULTS
+		RESULTS:0 = 这是什么，舔一下！
+		RESULTS:1 = 性欲伤害:{SKILL_NUM:skill_ID:INDEX("性欲")}
+		RESULTS:2 = 
+		RESULTS:3 = 
+		RESULTS:4 = 
+
+	CASE "读取"
+		SKILL_OBJ:skill_ID:INDEX("名称")			= 舔舔
+		SKILL_OBJ:skill_ID:INDEX("标签")			= 色情, 接触
+		SKILL_OBJ:skill_ID:INDEX("可选对象")		= 1
+		SKILL_OBJ:skill_ID:INDEX("冷却时间")		= 2
+		SKILL_NUM:skill_ID:INDEX("性欲")			= 60
+
+	CASEELSE
+ENDSELECT
+RETURN

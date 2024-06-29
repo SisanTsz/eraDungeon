@@ -3,8 +3,15 @@
 ;----------------------------------------------------------------
 
 ; Define用
+#DIM CONST TRUE = 1
+#DIM CONST FALSE = 0
+
 #DIM CONST 所有 = 0
 #DIM CONST 单体 = 1
+#DIM CONST 随机 = 2
+
+; 错误信息
+#DIMS ErrorInfo
 
 ;----------------------------------------------------------------
 ; 角色系统
@@ -13,6 +20,8 @@
 #DIM CONST CHARA_ENTITY_MAX = 1000
 ; 角色组件上限
 #DIM CONST CHARA_COMPONENT_MAX = 10
+; 角色数值属性
+#DIM CHARA_NUM, CHARA_ENTITY_MAX, CHARA_COMPONENT_MAX
 ; 角色非数值属性
 #DIMS CHARA_OBJ, CHARA_ENTITY_MAX, CHARA_COMPONENT_MAX
 
@@ -30,10 +39,19 @@
 
 ; 声明角色的技能列表
 ; 暂时没有启用
-#DIM CONST BATTLE_SKILL_MAX = 4
-#DIM CONST ERO_SKILL_MAX = 4
-#DIM BATTLE_SKILL_LIST, CHARA_ENTITY_MAX, BATTLE_SKILL_MAX
-#DIM ERO_SKILL_LIST, CHARA_ENTITY_MAX, ERO_SKILL_MAX
+#DIM CONST EQUIP_SKILL_MAX = 6
+#DIM CONST LEARNED_SKILL_MAX = 100
+; 激活配置的技能
+#DIM EQUIP_SKILL_LIST, CHARA_ENTITY_MAX, EQUIP_SKILL_MAX
+; 已习得的技能
+#DIM LEARNED_SKILL_LIST, CHARA_ENTITY_MAX, LEARNED_SKILL_MAX
+
+;----------------------------------------------------------------
+; 战场
+;----------------------------------------------------------------
+; 敌我双方的场地，约定0为空
+#DIM PLAYER_POS, 4
+#DIM ENEMY_POS, 4
 
 ;----------------------------------------------------------------
 ; 探索地图:房间定义

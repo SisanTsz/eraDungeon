@@ -1,0 +1,18 @@
+﻿;----------------------------------------------------------------
+; 获取chara_ID所在的位置。
+; 如果返回0，说明哪儿都不在；
+; 如果返回正数，说明在ENEMY
+;----------------------------------------------------------------
+@BATTLE_POS(chara_ID)
+#FUNCTION
+    #DIM chara_ID
+    #DIM pos
+    
+    pos = 0
+    REPEAT 4
+        SIF chara_ID == PLAYER_POS:COUNT
+            pos = -COUNT
+        SIF chara_ID == ENEMY_POS:COUNT
+            pos = COUNT
+    REND
+    RETURNF pos

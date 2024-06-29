@@ -1,0 +1,31 @@
+﻿;----------------------------------------------------------------
+; 进入一场战斗
+; 战斗结果要怎么区分各种情况，有逃跑吗，待定。总之先只考虑 -1未知 0战败 1战胜
+; duelMode
+; 0 常规死斗(目标是把对方血量打光，可以逃跑)
+; 1 友好切磋(具体规则没设计，大概就是打了半血就会退场，先不考虑)
+; 其它模式待设计
+;----------------------------------------------------------------
+@BATTLE_START(enemyTeam, duelMode = 0)
+    #DIMS enemyTeam
+    #DIM duelMode
+    #DIM battleResult
+    #DIM loopCount
+
+    ; 初始化敌人 将来封装起来 不同类型的战斗要有不同的初始化方法
+    SPLIT enemyTeam, ",", LOCALS
+    REPEAT RESULT
+        ADDCHARA TOINT(LOCALS:COUNT)
+        CFLAG:(CHARANUM - 1):TEAM = 2
+        CFLAG:(CHARANUM - 1):TEAMMEMBER = COUNT + 1
+        ENEMY_POS:COUNT = CHARANUM - 1
+    REND
+
+    CALL BATTLE_FIRST_PLAYER
+
+    ; debug
+    FOR loopCount, 0, 4
+        LOCALS = TEAMMEMBER%TOSTR(loopCount + 1)%
+        PRINTFORML %NAME:(FLAG:LOCALS)%
+    NEXT
+

@@ -97,15 +97,15 @@
     ENDIF
     RETURNF LOCAL
 
-@BATTLE_CHECK_CD(ARG:0,ARG:1) ;角色,技能
-    #FUNCTION
-    #DIMS PRE
-    LOCAL = 0
-    PRE = SKILLCD%TOSTR(ARG:1)%
-    IF CFLAG:(ARG:0):PRE > 0
-        LOCAL = 1
-    ENDIF
-    RETURNF LOCAL
+; @BATTLE_CHECK_CD(ARG:0,ARG:1) ;角色,技能
+;     #FUNCTION
+;     #DIMS PRE
+;     LOCAL = 0
+;     PRE = SKILLCD%TOSTR(ARG:1)%
+;     IF CFLAG:(ARG:0):PRE > 0
+;         LOCAL = 1
+;     ENDIF
+;     RETURNF LOCAL
 
 @BATTLE_BASE_CHANGE(ARG,ARG:1,ARGS) ;角色,修改 属性
     SELECTCASE ARGS
