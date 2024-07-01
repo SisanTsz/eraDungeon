@@ -27,6 +27,25 @@
     ENDSELECT
     RETURNF INDEX
 
+@INDEX_EXPLORE_BATTLE(ARGS)
+    #FUNCTION
+    #DIM INDEX
+    SELECTCASE ARGS
+        CASE "ID"
+            INDEX = 0
+        CASE "战斗类型"
+            INDEX = 1
+        CASE "敌人类型"
+            INDEX = 2
+        CASE "敌人组合"
+            INDEX = 3
+        CASE "名称"
+            INDEX = 4
+        CASEELSE
+            INDEX = -1
+    ENDSELECT
+    RETURNF INDEX
+
 @INDEX_EXPLORE(ARGS)
     #FUNCTION
     #DIM INDEX
@@ -34,20 +53,6 @@
         CASE "名字"
             INDEX = 0
         CASE "类型"
-            INDEX = 1
-        CASEELSE
-            INDEX = -1
-    ENDSELECT
-    RETURNF INDEX
-
-
-@INDEX_EXPLORE_ROOM(ARGS)
-    #FUNCTION
-    #DIM INDEX
-    SELECTCASE ARGS
-        CASE "名称"
-            INDEX = 0
-        CASE "描述"
             INDEX = 1
         CASEELSE
             INDEX = -1
