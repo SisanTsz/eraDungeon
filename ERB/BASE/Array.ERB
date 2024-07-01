@@ -8,6 +8,7 @@
 #FUNCTION
     #DIMS words
     #DIMS element
+    #DIM completeMatch
 
     SPLIT words ",", LOCALS
     RETURNF FINDELEMENT(LOCALS, element, , , completeMatch)

@@ -2,7 +2,7 @@
 ; 发情 测试用模板 所以会写很多没必要的东西
 ;----------------------------------------------------------------
 @BUFF_MODEL_1001(buff_ID, method, chara_ID = 0)
-#DIM skill_ID
+#DIM buff_ID
 #DIM chara_ID
 #DIMS method
 
@@ -27,7 +27,12 @@
     ; buff内的各种实际逻辑都写在下面
     CASE "添加"
 
+    ; 实时检测
     CASE "迭代"
+        ; 性欲为0时，移除自身
+        IF BASE:(BUFF_TARGET:buff_ID):性欲 < 1
+            CALL Remove_Buff(buff_ID)
+        ENDIF
 
     CASE "移除"
 
