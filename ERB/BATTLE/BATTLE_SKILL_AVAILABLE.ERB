@@ -9,10 +9,23 @@
     #DIM inPlayerTeam
     #DIM factor
     #DIM objCount
+    #DIM CONST 发情ID = 1001
 
     ; 判断是否冷却
     IF !Skill_is_CoolDown(skill_ID)
         ErrorInfo = "技能尚未冷却"
+        RETURNF FALSE
+    ENDIF
+
+    ; 判断该技能是否是非色情技能 且 当前角色处于发情
+    IF Arrays_Contains(SKILL_OBJ:skill_ID:INDEX("标签"), "色情") == -1 && FINDELEMENT(Get_BuffList_From_Chara(chara_ID), 发情ID, , , 1) > -1
+        ErrorInfo = "色情状态下无法使用"
+        RETURNF FALSE
+    ENDIF
+
+    ; 判断角色是否足以支付技能需求的体力和魔力
+    IF BASE:chara_ID:体力 < SKILL_NUM:skill_ID:INDEX("体力消耗") || BASE:chara_ID:魔力 < SKILL_NUM:skill_ID:INDEX("魔力消耗")
+        ErrorInfo = "无法支付代价"
         RETURNF FALSE
     ENDIF
 
@@ -25,7 +38,7 @@
         RETURNF FALSE
     ENDIF
 
-    ; 判断技能的特殊要求。比如效果描述里写：场上有其它六武众时才能发动。因为没有设计这样的技能，所以暂时留空
+    ; TODO: 判断技能的特殊要求。比如效果描述里写：场上有其它六武众时才能发动。因为没有设计这样的技能，所以暂时留空
 
     ; 判断目标需求
     ; 玩家队伍的正数目标，指向敌人队伍；负数目标指向玩家队伍。

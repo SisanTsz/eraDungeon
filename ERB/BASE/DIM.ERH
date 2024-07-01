@@ -54,6 +54,33 @@
 #DIM ENEMY_POS, 4
 
 ;----------------------------------------------------------------
+; Buff系统 (试下不用拼组件，而是每个属性都展开定义的写法。一游两制，看看哪种方便)
+;----------------------------------------------------------------
+#DIM CONST BUFF_ENTITY_MAX = 200
+
+; 实例化唯一ID                      运行时的BUFF具体实例
+#DIM BUFF_INS_ID, BUFF_ENTITY_MAX
+; 模板ID                            指向逻辑实现的方法，以及原始配置
+#DIM BUFF_MODEL_ID, BUFF_ENTITY_MAX
+; 发起人ID                          发起人被移除时，需要遍历这个数组，把所有相同ID的发起人都VARSET，否则可能会有意外状况
+#DIM BUFF_CASTER, BUFF_ENTITY_MAX
+; 承受者ID                          承受者被移除时，需要遍历这个系统下所有数组，把相应ID的值都VARSET
+#DIM BUFF_TARGET, BUFF_ENTITY_MAX
+
+; BUFF名称                          应该只用于显示，需要索引请使用模板ID
+#DIM BUFF_NAME, BUFF_ENTITY_MAX
+; BUFF标签数组                      约定分隔符为英文逗号","
+#DIMS BUFF_TAGS, BUFF_ENTITY_MAX
+; 当前堆叠层数
+#DIM BUFF_STACK, BUFF_ENTITY_MAX
+; 堆叠层数上限                      约定-1为无限
+#DIM BUFF_STACK_MAX, BUFF_ENTITY_MAX
+; 剩余时间                          约定-1为无限
+#DIM BUFF_DURATION, BUFF_ENTITY_MAX
+
+
+
+;----------------------------------------------------------------
 ; 探索地图:房间定义
 ;----------------------------------------------------------------
 #DIM CONST 事件 = 1

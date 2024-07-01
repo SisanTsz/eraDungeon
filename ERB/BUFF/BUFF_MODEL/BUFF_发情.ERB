@@ -1,0 +1,45 @@
+;----------------------------------------------------------------
+; 发情 测试用模板 所以会写很多没必要的东西
+;----------------------------------------------------------------
+@BUFF_MODEL_1001(buff_ID, method, chara_ID = 0)
+#DIM skill_ID
+#DIM chara_ID
+#DIMS method
+
+    ; 为什么不每个method都单独开@Function()，因为ID不好管理，如果哪天改BUFFID，每个function都要翻出来改，改漏也很难察觉
+    SELECTCASE method
+    ; 这里只写描述
+	CASE "描述"
+		VARSET RESULTS
+		RESULTS:0 = {NAME:chara_ID}陷入发情！
+
+    ; 这里只写静态数据，不写逻辑
+	CASE "读取"
+        ; 显示用的名字。如果想设计一个场景效果，让所有BUFF名和技能名都显示为不可名状的锟斤拷，可以 BUFF_NAME:buff_ID = 锟斤拷
+		BUFF_NAME:buff_ID                   = 发情
+        ; 不知道需要什么标签
+        BUFF_TAGS:buff_ID                   =
+        ; 发情只能叠加1层
+		BUFF_STACK_MAX:buff_ID              = 1
+        ; 发情的持续时间无限
+		BUFF_DURATION:buff_ID               = -1
+    
+    ; buff内的各种实际逻辑都写在下面
+    CASE "添加"
+
+    CASE "迭代"
+
+    CASE "移除"
+
+    CASE "行动"
+
+    ; 攻击和受击是同一个事件，哪怕被闪避了也会触发受击事件，当然也可以在触发事件之后进一步判断有没有受到伤害
+    CASE "受击"
+
+    CASE "受伤"
+
+    CASE "死亡"
+
+	CASEELSE
+ENDSELECT
+RETURN
