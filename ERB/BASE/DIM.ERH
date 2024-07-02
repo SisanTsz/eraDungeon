@@ -10,6 +10,15 @@
 #DIM CONST 单体 = 1
 #DIM CONST 随机 = 2
 
+; 事件队列
+#DIM CONST EventMessage_MAX = 20
+#DIM CONST EventMessageArg_MAX = 10
+#DIMS EventMessageQueue, EventMessage_MAX, EventMessageArg_MAX
+
+; 事件监听器列表
+#DIM CONST EventListener_MAX = 100
+#DIMS EventListenerList, EventListener_MAX
+
 ; 错误信息
 #DIMS ErrorInfo
 
