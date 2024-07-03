@@ -1,0 +1,14 @@
+
+@EXPLORE_BATTLE_0(event_ID,method)
+    #DIM event_id
+    #DIMS method
+    SELECTCASE method
+        ;应该是类似备注的东西?
+        CASE "描述"
+            VARSET RESULTS
+            RESULTS:0 = 这是一个测试战斗
+        CASE "读取"
+            EXPLORE_BATTLE_OBJ:event_ID:INDEX_EXPLORE_BATTLE("描述")    = 前方有一群怪物
+        CASEELSE
+    ENDSELECT
+    RETURN

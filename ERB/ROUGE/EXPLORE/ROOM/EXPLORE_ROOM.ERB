@@ -1,12 +1,18 @@
 @EXPLORE_ROOM
     ;EXPLORE_ROOM_OBJ:(房间编号):(提取的独特编号)
 
-
-    EXPLORE_ROOM_OBJ:1:INDEX_EXPLORE("名字") = 事件
-    EXPLORE_ROOM_OBJ:2:INDEX_EXPLORE("名字") = 战斗
-    EXPLORE_ROOM_OBJ:3:INDEX_EXPLORE("名字") = 事件
+    ;使用函数决定是事件还是战斗
+    ; call room random
+    EXPLORE_ROOM_OBJ:1:INDEX_EXPLORE("类型") = 事件
+    EXPLORE_ROOM_OBJ:2:INDEX_EXPLORE("类型") = 战斗
+    EXPLORE_ROOM_OBJ:3:INDEX_EXPLORE("类型") = 事件
     
-    EXPLORE_ROOM_NUM:1:INDEX_EXPLORE("类型") = 事件
-    EXPLORE_ROOM_NUM:2:INDEX_EXPLORE("类型") = 战斗
-    EXPLORE_ROOM_NUM:3:INDEX_EXPLORE("类型") = 事件
+    ;根据房间类型从池子抽取房间
+    ; call event random
+    ; call battle random
+
+    ;先试用固定房间
+    CALL EXPLORE_EVENT_0(1,"读取")
+    CALL EXPLORE_BATTLE_0(2,"读取")
+    CALL EXPLORE_EVENT_1(3,"读取")
     

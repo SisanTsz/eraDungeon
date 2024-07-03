@@ -1,7 +1,5 @@
 
-
-
-@EXPLORE_EVENT_0(event_ID, method)
+@EXPLORE_EVENT_1(event_ID, method)
     #DIM event_id
     #DIMS method
     SELECTCASE method
@@ -11,9 +9,9 @@
             RESULTS:0 = 这是一个测试事件
         CASE "读取"
             ;事件名
-            EXPLORE_EVENT_OBJ:event_id:INDEX_EXPLORE_EVENT("名称")    = 测试事件1
+            EXPLORE_EVENT_OBJ:event_id:INDEX_EXPLORE_EVENT("名称")    = 测试事件2
             EXPLORE_EVENT_OBJ:event_id:INDEX_EXPLORE_EVENT("事件类型") = 固定事件
-            EXPLORE_EVENT_OBJ:event_id:INDEX_EXPLORE_EVENT("描述") = 前面好像有个人
+            EXPLORE_EVENT_OBJ:event_id:INDEX_EXPLORE_EVENT("描述") = 前方有座石雕
         CASEELSE
     ENDSELECT
     RETURN
