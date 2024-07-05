@@ -2,7 +2,7 @@
 
 
 @EXPLORE_EVENT_0(event_ID, method)
-    #DIM event_id
+    #DIM event_ID
     #DIMS method
     SELECTCASE method
         ;应该是类似备注的东西?
@@ -11,9 +11,9 @@
             RESULTS:0 = 这是一个测试事件
         CASE "读取"
             ;事件名
-            EXPLORE_EVENT_OBJ:event_id:INDEX_EXPLORE_EVENT("名称")    = 测试事件1
-            EXPLORE_EVENT_OBJ:event_id:INDEX_EXPLORE_EVENT("事件类型") = 固定事件
-            EXPLORE_EVENT_OBJ:event_id:INDEX_EXPLORE_EVENT("描述") = 前面好像有个人
+            EXPLORE_EVENT_OBJ:event_ID:INDEX_EXPLORE_EVENT("名称")    = 测试事件1
+            EXPLORE_EVENT_OBJ:event_ID:INDEX_EXPLORE_EVENT("事件类型") = 固定事件
+            EXPLORE_EVENT_OBJ:event_ID:INDEX_EXPLORE_EVENT("描述") = 前面好像有个人
         CASEELSE
     ENDSELECT
     RETURN
