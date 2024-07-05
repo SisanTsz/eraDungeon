@@ -3,6 +3,14 @@
 ;----------------------------------------------------------------
 @Event_Manager()
 
+    REPEAT VARSIZE(EventName)
+        IF EventName:COUNT != ""
+            CONTINUE
+        ELSE
+            ; todo: 呼叫监听
+        ENDIF
+    REND
+
 
 
 @Listen_Event(event_enum, callBackFunctionName)
@@ -19,4 +27,15 @@
     #DIMS event_enum
     #DIMS eventObj
 
+    REPEAT VARSIZE(EventName)
+        IF EventName:COUNT != ""
+            CONTINUE
+        ELSE
+            EventName:COUNT = event_enum
+            EventObj:COUNT = eventObj
+            RETURN
+        ENDIF
+    REND
+    ErrorInfo = "事件队列已满，扩容吧！"
+    RETURN
 

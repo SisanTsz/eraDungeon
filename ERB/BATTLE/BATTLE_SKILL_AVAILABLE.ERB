@@ -9,7 +9,7 @@
     #DIM inPlayerTeam
     #DIM factor
     #DIM objCount
-    #DIM CONST 发情ID = 1001
+    #DIMS CONST 发情ID = "1001"
 
     ; 判断是否冷却
     IF !Skill_is_CoolDown(skill_ID)
@@ -18,8 +18,8 @@
     ENDIF
 
     ; 判断该技能是否是非色情技能 且 当前角色处于发情
-    LOCAL = Get_BuffList_From_Chara(chara_ID)
-    IF Arrays_Contains(SKILL_OBJ:skill_ID:INDEX("标签"), "色情") == -1 && FINDELEMENT(LOCAL, 发情ID, , , 1) > -1
+    SPLIT Get_BuffList_From_Chara(chara_ID), ",", LOCALS
+    IF Arrays_Contains(SKILL_OBJ:skill_ID:INDEX("标签"), "色情") == -1 && FINDELEMENT(LOCALS, 发情ID, , , 1) > -1
         ErrorInfo = "色情状态下无法使用"
         RETURNF FALSE
     ENDIF

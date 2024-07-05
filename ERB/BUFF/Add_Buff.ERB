@@ -1,14 +1,85 @@
 ;----------------------------------------------------------------
-; TODO: 为角色添加一个buff，同时触发添加buff事件
+; 为角色添加一个buff，同时触发添加buff事件
 ;----------------------------------------------------------------
-@Add_Buff(caster_ID, target_ID, buff_ID, duration, isSetDuration = FALSE, stack, isSetStack = FALSE, reason)
+@Add_Buff(caster_ID, target_ID, buff_Model_ID, duration, isSetDuration = FALSE, stack, isSetStack = FALSE, reason)
     #DIM caster_ID
     #DIM target_ID
-    #DIM buff_ID
+    #DIM buff_Model_ID
     #DIM duration
     #DIM isSetDuration
     #DIM stack
     #DIM isSetStack
     #DIMS reason
+    #DIMS eventObj
+    #DIM existID
+    #DIM hasIns
+
+    ; 检查角色身上是否有相同Buff，有的话就叠加duration和stack，没有的话再创建
+    SPLIT Get_BuffList_From_Chara(chara_ID), ",", LOCALS
+    existID = FINDELEMENT(LOCALS, TOSTR(buff_Model_ID), , , 1)
+    ; 【创建】找到BUFF_MODEL_ID第一个ID为0的ENTITY，插入
+    hasIns = FALSE
+    REPEAT VARSIZE(BUFF_MODEL_ID)
+        IF BUFF_MODEL_ID:COUNT != 0
+            CONTINUE
+        ELSE
+            BUFF_MODEL_ID:COUNT = buff_Model_ID
+            BUFF_CASTER:COUNT = caster_ID
+            BUFF_TARGET:COUNT = target_ID
+
+            CALL BUFF_MODEL_%buff_Model_ID%(COUNT,"BUFF_NAME")
+            BUFF_NAME:COUNT = RESULTS
+
+            CALL BUFF_MODEL_%buff_Model_ID%(COUNT,"BUFF_TAGS")
+            BUFF_TAGS:COUNT = RESULTS
+
+            CALL BUFF_MODEL_%buff_Model_ID%(COUNT,"BUFF_STACK_MAX")
+            BUFF_STACK_MAX:COUNT = RESULTS
+
+            hasIns = TRUE
+        ENDIF
+    REND
+    IF hasIns == FALSE
+        ErrorInfo = "新Buff插入失败"
+        RETURN
+    ENDIF
+
+    ; 创建和叠加都要修改层数和时间
+    ; 是设置层数还是添加层数
+    IF isSetStack == TRUE
+        BUFF_STACK:COUNT = stack
+    ELSE
+        BUFF_STACK:COUNT += stack
+    ENDIF
+    ; 超过层数上限时，设为上限
+    IF BUFF_STACK:COUNT > BUFF_STACK_MAX:COUNT
+        BUFF_STACK:COUNT = BUFF_STACK_MAX:COUNT
+    ENDIF
+
+    ; 如果持续时间是-1，意思是无限时间，禁用取高
+    ; 否则比较原时间和新时间，取较高值
+    IF isSetDuration == TRUE
+        BUFF_DURATION:COUNT = duration
+    ELSEIF BUFF_DURATION:COUNT != -1
+        BUFF_DURATION:COUNT = BUFF_DURATION:COUNT > duration ? BUFF_DURATION:COUNT # duration
+    ELSE
+    ENDIF
+
+    ; 参数全部打包进eventObj
+    ; 想象一下角色身上有一个Buff[血债血偿]：每次被敌人施加流血时，向敌人施加相同层数的流血
+    ; 敌人向我方添加流血Buff时，会Trigger_Event，向事件消息队列里发送一条eventObj
+    ; 而这个[血债血偿]Buff在被添加时会监听事件消息队列，如果有添加Buff事件，执行回调函数
+    ; 在回调函数中解包eventObj，如果eventObj的target_ID是自身，且caster_ID是敌人，且buff_ID是流血，那么向caster_ID添加相同stack的流血
+    ; 当然，如果对方也有[血债血偿]的话，恐怕就会陷入无限连锁了……
+    eventObj:0 = TOSTR(caster_ID)
+    eventObj:1 = TOSTR(target_ID)
+    eventObj:2 = TOSTR(buff_ID)
+    eventObj:3 = TOSTR(duration)
+    eventObj:4 = TOSTR(isSetDuration)
+    eventObj:5 = TOSTR(stack)
+    eventObj:6 = TOSTR(isSetStack)
+    eventObj:7 = reason
+
+    CALL Trigger_Event("添加BUFF", eventObj)
 
     RETURN

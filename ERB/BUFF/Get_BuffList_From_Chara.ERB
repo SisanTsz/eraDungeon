@@ -1,9 +1,16 @@
 ;----------------------------------------------------------------
-; TODO: 获取角色身上所有buff作为数组返回 只要遍历BUFF_TARGET就能拿到
+; 获取角色身上所有buff ID作为待解析字符数组返回
 ;----------------------------------------------------------------
 @Get_BuffList_From_Chara(chara_ID)
-#Function
+#FUNCTION
     #DIM chara_ID
-    #DIM buff_List
+    ; 有没有更好的写法呢，era又没有List.Add()
+    #DIMS buff_List_String
 
-    RETURNF buff_List
+    buff_List_String =
+    REPEAT VARSIZE(BUFF_TARGET)
+        IF BUFF_TARGET:COUNT == chara_ID
+            buff_List_String += TOSTR(COUNT) + ","
+        ENDIF
+    REND
+    RETURNF buff_List_String

@@ -12,8 +12,8 @@
 
 ; 事件队列
 #DIM CONST EventMessage_MAX = 20
-#DIM CONST EventMessageArg_MAX = 10
-#DIMS EventMessageQueue, EventMessage_MAX, EventMessageArg_MAX
+#DIMS EventName, EventMessage_MAX
+#DIMS EventObj, EventMessage_MAX
 
 ; 事件监听器列表
 #DIM CONST EventListener_MAX = 100
@@ -67,8 +67,6 @@
 ;----------------------------------------------------------------
 #DIM CONST BUFF_ENTITY_MAX = 200
 
-; 实例化唯一ID                      运行时的BUFF具体实例
-#DIM BUFF_INS_ID, BUFF_ENTITY_MAX
 ; 模板ID                            指向逻辑实现的方法，以及原始配置
 #DIM BUFF_MODEL_ID, BUFF_ENTITY_MAX
 ; 发起人ID                          发起人被移除时，需要遍历这个数组，把所有相同ID的发起人都VARSET，否则可能会有意外状况

@@ -13,16 +13,19 @@
 		VARSET RESULTS
 		RESULTS:0 = {NAME:chara_ID}陷入发情！
 
-    ; 这里只写静态数据，不写逻辑
-	CASE "读取"
-        ; 显示用的名字。如果想设计一个场景效果，让所有BUFF名和技能名都显示为不可名状的锟斤拷，可以 BUFF_NAME:buff_ID = 锟斤拷
-		BUFF_NAME:buff_ID                   = 发情
-        ; 不知道需要什么标签
-        BUFF_TAGS:buff_ID                   =
-        ; 发情只能叠加1层
-		BUFF_STACK_MAX:buff_ID              = 1
-        ; 发情的持续时间无限
-		BUFF_DURATION:buff_ID               = -1
+    ; 静态数据配置
+    ; 显示用的名字。如果想设计一个场景效果，让所有BUFF名和技能名都显示为不可名状的锟斤拷，可以 BUFF_NAME:buff_ID = 锟斤拷
+    CASE "BUFF_NAME"
+        VARSET RESULTS
+        RESULTS = 发情
+    ; 发情只能叠加1层
+    CASE "BUFF_STACK_MAX"
+        VARSET RESULT
+        RESULT = 1
+    ; 发情的持续时间无限
+    CASE "BUFF_DURATION"
+        VARSET RESULT
+        RESULT = -1
     
     ; buff内的各种实际逻辑都写在下面
     CASE "添加"

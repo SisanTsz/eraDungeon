@@ -4,5 +4,20 @@
 @Remove_Buff(buff_ID, reason = "自身效果")
     #DIM buff_ID
     #DIMS reason
+    #DIMS eventObj
+
+    VARSET BUFF_MODEL_ID:buff_ID
+    VARSET BUFF_CASTER:buff_ID
+    VARSET BUFF_TARGET:buff_ID
+    VARSET BUFF_NAME:buff_ID
+    VARSET BUFF_TAGS:buff_ID
+    VARSET BUFF_STACK:buff_ID
+    VARSET BUFF_STACK_MAX:buff_ID
+    VARSET BUFF_DURATION:buff_ID
+
+    ; 只有一个参数，移除原因
+    eventObj:0 = reason
+
+    CALL Trigger_Event("移除BUFF", eventObj)
 
     RETURN
