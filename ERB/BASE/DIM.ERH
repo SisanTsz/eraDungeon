@@ -14,10 +14,12 @@
 #DIM CONST EventMessage_MAX = 20
 #DIMS EventName, EventMessage_MAX
 #DIMS EventObj, EventMessage_MAX
+#DIM CurrentEventID
 
 ; 事件监听器列表
 #DIM CONST EventListener_MAX = 100
-#DIMS EventListenerList, EventListener_MAX
+#DIMS EventListenerEnum, EventListener_MAX
+#DIMS EventListenerFunction, EventListener_MAX
 
 ; 错误信息
 #DIMS ErrorInfo

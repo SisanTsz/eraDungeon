@@ -1,28 +1,87 @@
 ;----------------------------------------------------------------
-; 事件管理器 这个事件是广义上的一切事件
+; 事件管理器
+; 这个事件是广义上的一切事件
+; 比如进入剧情、进入战斗、开始行动、受到攻击……
 ;----------------------------------------------------------------
 @Event_Manager()
 
+    ; 重置当前事件索引ID
+    CurrentEventID = -1
+    ; 遍历事件列表，广播通知所有相应的监听者执行回调函数
     REPEAT VARSIZE(EventName)
-        IF EventName:COUNT != ""
+        ; 事件列表可能会有空位，跳过
+        IF EventName:COUNT == ""
             CONTINUE
         ELSE
-            ; todo: 呼叫监听
+            ; 广播事件
+            CurrentEventID = COUNT
+            CALL Notification_Listener(EventName:COUNT)
+
+            ; 移除事件
+            EventName:COUNT =
+            EventObj:COUNT =
         ENDIF
     REND
+    RETURN
 
 
+;----------------------------------------------------------------
+; 遍历EventListenerEnum，调用所有监听eventName的回调函数
+;----------------------------------------------------------------
+@Notification_Listener(eventName)
+    #DIMS eventName
 
+    REPEAT VARSIZE(EventListenerEnum)
+        IF EventListenerEnum:COUNT != eventName
+            CONTINUE
+        ELSE
+            TRYCALLFORM EventListenerFunction:COUNT
+            RETURN
+        ENDIF
+    REND
+    RETURN
+
+
+;----------------------------------------------------------------
+; 添加监听，向EventListenerEnum添加监听事件名，向EventListenerFunction添加回调函数
+; 回调函数是无参数的，需要获取事件信息的话，直接从EventName:CurrentEventID读取，然后解包
+;----------------------------------------------------------------
 @Listen_Event(event_enum, callBackFunctionName)
     #DIMS event_enum
     #DIMS callBackFunctionName
 
+    REPEAT VARSIZE(EventListenerEnum)
+        IF EventListenerEnum:COUNT != ""
+            CONTINUE
+        ELSE
+            EventListenerEnum:COUNT = event_enum
+            EventListenerFunction:COUNT = callBackFunctionName
+            RETURN
+        ENDIF
+    REND
+    ErrorInfo = "监听队列已满，扩容吧！"
+    RETURN
 
+;----------------------------------------------------------------
+; 移除一个监听
+;----------------------------------------------------------------
 @Unlisten_Event(event_enum, callBackFunctionName)
     #DIMS event_enum
     #DIMS callBackFunctionName
+    #DIM index
 
+    index = FINDELEMENT(EventListenerEnum, event_enum, , , 1)
+    IF index == -1
+        ErrorInfo = "找不到需要移除的监听"
+        RETURN
+    ENDIF
+    EventListenerEnum:index =
+    EventListenerFunction:index =
+    RETURN
 
+;----------------------------------------------------------------
+; 触发一个事件就是往事件列表里推送一条消息，然后Event_Manager会广播给所有监听这个事件的监听器，触发相应的回调函数
+;----------------------------------------------------------------
 @Trigger_Event(event_enum, eventObj)
     #DIMS event_enum
     #DIMS eventObj
