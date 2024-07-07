@@ -1,6 +1,4 @@
 
-
-
 @EXPLORE_EVENT_0(event_ID, method)
     #DIM event_ID
     #DIMS method
@@ -11,10 +9,26 @@
             RESULTS:0 = 这是一个测试事件
         CASE "读取"
             ;事件名
-            EXPLORE_EVENT_OBJ:event_ID:INDEX_EXPLORE_EVENT("名称")    = 测试事件1
-            EXPLORE_EVENT_OBJ:event_ID:INDEX_EXPLORE_EVENT("事件类型") = 固定事件
-            EXPLORE_EVENT_OBJ:event_ID:INDEX_EXPLORE_EVENT("描述") = 前面好像有个人
+            EXPLORE_ROOM_OBJ:event_ID:INDEX_EXPLORE("名字")     = 上锁宝箱
+            EXPLORE_ROOM_NUM:event_ID:INDEX_EXPLORE("类型")     = 事件
+            EXPLORE_ROOM_NUM:event_ID:INDEX_EXPLORE("类型2") = 固定事件
+            EXPLORE_ROOM_OBJ:event_ID:INDEX_EXPLORE("引述") = 前面好像有个宝箱
+            EXPLORE_ROOM_NUM:event_ID:INDEX_EXPLORE("效果") = 正面
+            EXPLORE_ROOM_OBJ:event_ID:INDEX_EXPLORE("选项列表") = EXPLORE_EVENT_0_ACT
+            EXPLORE_ROOM_OBJ:event_ID:INDEX_EXPLORE("回应") = EXPLORE_EVENT_0_COM
         CASEELSE
     ENDSELECT
     RETURN
+    
+@EXPLORE_EVENT_0_ACT
+    EXPLORE_ROOM_DESCRIPTION:1 = 一个沉重的箱子翻倒在地上，它的主人曾经有着何等遭遇已经不得而知，但现在它是我们的了。
+    EXPLORE_ROOM_BUTTON:1 = [将其砸开]
+    EXPLORE_ROOM_BUTTON:2 = [使用万能钥匙打开]
+    EXPLORE_ROOM_BUTTON:3 = [离开]
+
+@EXPLORE_EVENT_0_COM
+    SELECTCASE FLAG:选项选择
+        CASE 1
+            EXPLORE_ROOM_EVENT_RESULT:1 = 获得1000G
+    ENDSELECT
     

@@ -14,33 +14,32 @@
         ;事件/战斗类型(暂定)
         CASE "类型2"
             INDEX = 3
-        ;debug用/理解
-        CASE "描述"
-            INDEX = 4
         ;正面/中性/负面(难度修改用)
         CASE "效果"
-            CASE = 5
+            INDEX = 4
         ;剧情包名/地图专属
         CASE "系列"
-            CASE = 6
+            INDEX = 5
         ;包内名
         CASE "号码"
-            CASE = 7
+            INDEX = 6
         ;例:前方有一座石雕
         CASE "引述"
-            CASE = 8
+            INDEX = 7
         ;进入事件后的描述
         CASE "描述"
-            CASE = 9
+            INDEX = 8
         ;以下的都不懂怎么实现(傻)
         ;但先抄了
         CASE "激活条件"
-            INDEX = 10
+            INDEX = 9
         CASE "响应条件"
-            INDEX = 11
+            INDEX = 10
         CASE "待解析文本"
-            INDEX = 12
+            INDEX = 11
         CASE "选项列表"
+            INDEX = 12
+        CASE "回应"
             INDEX = 13
         ;可激活,已激活,未激活,etc
         CASE "状态"

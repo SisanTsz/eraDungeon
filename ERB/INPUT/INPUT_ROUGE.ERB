@@ -1,8 +1,11 @@
 @INPUT_ROUGE
     SELECTCASE RESULT
         CASE 1 TO 10
-            FLAG:节点 += 1
-            CALL ROUGE_STAGE_RANDOM
+            FLAG:房间选择 = RESULT
+            CALLFORM %EXPLORE_ROOM_OBJ:(FLAG:房间选择):INDEX_EXPLORE("选项列表")%
+        CASE 11 TO 20
+            FLAG:选项选择 = RESULT - 10
+            CALLFORM %EXPLORE_ROOM_OBJ:(FLAG:房间选择):INDEX_EXPLORE("回应")%
     ENDSELECT
 
 
