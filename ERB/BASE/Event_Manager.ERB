@@ -3,15 +3,24 @@
 ;----------------------------------------------------------------
 @Event_Manager()
 
+    ; 重置当前事件索引ID
     CurrentEventID = -1
+    ; 遍历事件列表，广播通知所有相应的监听者执行回调函数
     REPEAT VARSIZE(EventName)
+        ; 事件列表可能会有空位，跳过
         IF EventName:COUNT != ""
             CONTINUE
         ELSE
+            ; 广播事件
             CurrentEventID = COUNT
             CALL Notification_Listener(EventName:COUNT)
+
+            ; 移除事件
+            EventName:COUNT =
+            EventObj:COUNT =
         ENDIF
     REND
+    RETURN
 
 
 ;----------------------------------------------------------------
