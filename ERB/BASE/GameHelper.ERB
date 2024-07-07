@@ -1,0 +1,45 @@
+;----------------------------------------------------------------
+; 随机生成一个16长度的数字+大小写字母的字符串，一般用于实例化ID
+;----------------------------------------------------------------
+@Generate_UUID()
+#FUNCTIONS
+    #DIMS charArray, 16
+    #DIM iter
+
+    FOR iter, 0, 16
+        SUBSTRINGU charEnum, RAND(62), 1
+        charArray:iter = %RESULTS%
+    NEXT
+
+    RETURNF STRJOIN(charArray, "")
+
+;----------------------------------------------------------------
+; 创建一个角色实例，返回角色在chara中的索引
+;----------------------------------------------------------------
+@New_Chara(model_ID)
+#FUNCTION
+    #DIM model_ID
+    #DIM index
+
+    ADDCHARA model_ID
+    index = CHARANUM - 1
+    CSTR:index:身份证号 = %Generate_UUID()%
+    RETURNF index
+
+;----------------------------------------------------------------
+; 通过身份证号索引角色实例ID
+; 角色可能会在游戏中动态增删，导致实例ID变化
+; 但身份证是唯一的，这能用于各种同一性判断场景
+; 比如战斗H时一个哥布林一发入魂，然后死掉了，
+; 下次刷出的哥布林是不是孩子的父亲，这时候就用身份证号来判断
+;----------------------------------------------------------------
+@Get_CharaID(uuid)
+#FUNCTION
+    #DIMS uuid
+
+    REPEAT CHARANUM
+        IF CSTR:COUNT:身份证号 == uuid
+            RETURNF COUNT
+        ENDIF
+    REND
+    RETURNF -1

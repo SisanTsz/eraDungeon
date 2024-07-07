@@ -11,14 +11,18 @@
     #DIM duelMode
     #DIM battleResult
     #DIM loopCount
+    #DIM insID
 
     ; 初始化敌人 将来封装起来 不同类型的战斗要有不同的初始化方法
     SPLIT enemyTeam, ",", LOCALS
     REPEAT RESULT
-        ADDCHARA TOINT(LOCALS:COUNT)
-        CFLAG:(CHARANUM - 1):TEAM = 2
-        CFLAG:(CHARANUM - 1):TEAMMEMBER = COUNT + 1
-        ENEMY_POS:COUNT = CHARANUM - 1
+        insID = New_Chara(TOINT(LOCALS:COUNT))
+        CFLAG:insID:TEAM = 2
+        BASE:insID:体力 = MAXBASE:insID:体力
+        BASE:insID:魔力 = MAXBASE:insID:魔力
+        BASE:insID:性欲 = 100
+        BASE:insID:快感 = 100
+        ENEMY_POS:COUNT = insID
     REND
 
     CALL BATTLE_FIRST_PLAYER
@@ -28,4 +32,31 @@
         LOCALS = TEAMMEMBER%TOSTR(loopCount + 1)%
         PRINTFORML %NAME:(FLAG:LOCALS)%
     NEXT
+    RETURN
 
+
+;----------------------------------------------------------------
+; 临时测试用：导入玩家队伍
+;----------------------------------------------------------------
+@Temp_Import_PlayerTeam(playerTeam)
+    #DIMS playerTeam
+    #DIM insID
+
+    SPLIT playerTeam, ",", LOCALS
+    REPEAT RESULT
+        insID = New_Chara(TOINT(LOCALS:COUNT))
+        CFLAG:insID:TEAM = 1
+        BASE:insID:体力 = MAXBASE:insID:体力
+        BASE:insID:魔力 = MAXBASE:insID:魔力
+        BASE:insID:性欲 = 100
+        BASE:insID:快感 = 100
+        PLAYER_POS:COUNT = insID
+    REND
+
+    ; 先暴力导入
+    FLAG:TEAMMEMBER1 = 1
+    FLAG:TEAMMEMBER2 = 2
+    FLAG:TEAMMEMBER3 = 3
+    FLAG:TEAMMEMBER4 = 4
+
+    RETURN

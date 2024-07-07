@@ -19,10 +19,10 @@ BASE,性欲,0
 BASE,快感,200
 
 BASE,物理攻击,10
-BASE,法术攻击,0
+BASE,法术攻击,10
 BASE,命中,95
 BASE,暴击率,5
-BASE,爆击伤害,200
+BASE,暴击伤害,200
 BASE,速度,10
 
 BASE,物理防御,0
@@ -48,7 +48,6 @@ BASE,Ａ名器,0
 BASE,Ｆ名器,0
 BASE,Ｓ名器,0
 
-CFLAG,编号,1001
 ; 初始技能列表
 CFLAG,SKILL1,1001
 CFLAG,SKILL2,1002

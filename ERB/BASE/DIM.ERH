@@ -10,6 +10,8 @@
 #DIM CONST 单体 = 1
 #DIM CONST 随机 = 2
 
+#DIMS CONST charEnum = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
 ; 事件队列
 #DIM CONST EventMessage_MAX = 20
 #DIMS EventName, EventMessage_MAX
@@ -63,6 +65,9 @@
 ; 敌我双方的场地，约定0为空
 #DIM PLAYER_POS, 4
 #DIM ENEMY_POS, 4
+; 每个角色都有一个累计行动点，每个Tick将速度增加到累计行动点中
+; 累计行动点达到TimeBar的角色才可以行动，行动前累计行动点-=TimeBar
+#DIM CONST TimeBar = 10000
 
 ;----------------------------------------------------------------
 ; Buff系统 (试下不用拼组件，而是每个属性都展开定义的写法。一游两制，看看哪种方便)
