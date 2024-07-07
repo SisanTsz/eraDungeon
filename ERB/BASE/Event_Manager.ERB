@@ -3,13 +3,29 @@
 ;----------------------------------------------------------------
 @Event_Manager()
 
+    CurrentEventID = -1
     REPEAT VARSIZE(EventName)
         IF EventName:COUNT != ""
             CONTINUE
         ELSE
-            ; todo: 呼叫监听
+            CurrentEventID = COUNT
+            CALL Notification_Listener(EventName:COUNT)
         ENDIF
     REND
+
+
+@Notification_Listener(eventName)
+    #DIMS eventName
+
+    REPEAT VARSIZE(EventListenerEnum)
+        IF EventListenerEnum:COUNT != eventName
+            CONTINUE
+        ELSE
+            TRYCALLFORM {EventListenerFunction:COUNT}({EventObj:CurrentEventID})
+            RETURN
+        ENDIF
+    REND
+    RETURN
 
 
 
@@ -17,10 +33,32 @@
     #DIMS event_enum
     #DIMS callBackFunctionName
 
+    REPEAT VARSIZE(EventListenerEnum)
+        IF EventListenerEnum:COUNT != ""
+            CONTINUE
+        ELSE
+            EventListenerEnum:COUNT = event_enum
+            EventListenerFunction:COUNT = callBackFunctionName
+            RETURN
+        ENDIF
+    REND
+    ErrorInfo = "监听队列已满，扩容吧！"
+    RETURN
+
 
 @Unlisten_Event(event_enum, callBackFunctionName)
     #DIMS event_enum
     #DIMS callBackFunctionName
+    #DIM index
+
+    index = FINDELEMENT(EventListenerEnum, event_enum, , , 1)
+    IF index == -1
+        ErrorInfo = "找不到需要移除的监听"
+        RETURN
+    ENDIF
+    EventListenerEnum:index =
+    EventListenerFunction =
+    RETURN
 
 
 @Trigger_Event(event_enum, eventObj)
