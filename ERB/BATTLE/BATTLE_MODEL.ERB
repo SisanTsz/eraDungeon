@@ -22,10 +22,16 @@
         BASE:insID:魔力 = MAXBASE:insID:魔力
         BASE:insID:性欲 = 100
         BASE:insID:快感 = 100
+        CFLAG:insID:战斗计时器 = 0
         ENEMY_POS:COUNT = insID
     REND
+    ; 暴力导入敌人队伍
+    FLAG:ENEMYMEMBER1 = 5
+    FLAG:ENEMYMEMBER2 = 6
+    FLAG:ENEMYMEMBER3 = 7
+    FLAG:ENEMYMEMBER4 = 8
 
-    CALL BATTLE_FIRST_PLAYER
+    ; CALL BATTLE_FIRST_PLAYER
 
     ; debug
     FOR loopCount, 0, 4
@@ -50,6 +56,7 @@
         BASE:insID:魔力 = MAXBASE:insID:魔力
         BASE:insID:性欲 = 100
         BASE:insID:快感 = 100
+        CFLAG:insID:战斗计时器 = 0
         PLAYER_POS:COUNT = insID
     REND
 
@@ -59,4 +66,56 @@
     FLAG:TEAMMEMBER3 = 3
     FLAG:TEAMMEMBER4 = 4
 
+    RETURN
+
+;----------------------------------------------------------------
+; 战斗逻辑帧
+;----------------------------------------------------------------
+@Battle_Tick()
+    #DIM currentCharaID
+    #DIM currentCharaTimer
+
+    currentCharaID = -1
+    currentCharaTimer = TimeBar
+    ; 计算行动条，如果有角色计时器大于TimeBar(目前是1000)，那么该角色可能行动
+    ; 有多个可动角色时，计时器高者优先行动；计时器相同时，玩家阵营优先行动；阵营相同时，前排优先行动
+    REPEAT 4
+        CFLAG:(PLAYER_POS:COUNT):战斗计时器 += CFLAG:(PLAYER_POS:COUNT):速度
+        IF CFLAG:(PLAYER_POS:COUNT):战斗计时器 > currentCharaTimer
+            currentCharaTimer = CFLAG:(PLAYER_POS:COUNT):战斗计时器
+            currentCharaID = PLAYER_POS:COUNT
+        ENDIF
+    REND
+    REPEAT 4
+        CFLAG:(ENEMY_POS:COUNT):战斗计时器 += CFLAG:(ENEMY_POS:COUNT):速度
+        IF CFLAG:(ENEMY_POS:COUNT):战斗计时器 > currentCharaTimer
+            currentCharaTimer = CFLAG:(ENEMY_POS:COUNT):战斗计时器
+            currentCharaID = ENEMY_POS:COUNT
+        ENDIF
+    REND
+    ; 当前可动角色减少TimeBar，然后进入行动
+    IF currentCharaID > 0
+        CFLAG:currentCharaID:战斗计时器 -= TimeBar
+        CALL Battle_Round(currentCharaID)
+    ENDIF
+
+    RETURN
+
+;----------------------------------------------------------------
+; 角色行动回合
+;----------------------------------------------------------------
+@Battle_Round(currentCharaID)
+    #DIM currentCharaID
+    #DIMS RoundStartEventObj
+
+        ; 目前只需要一个角色ID参数，如果要玩点花的比如加入换手机制，就要再添加一个reason参数表明这个回合是为什么开始
+        RoundStartEventObj:0 = TOSTR(currentCharaID)
+        CALL Trigger_Event("回合开始", RoundStartEventObj)
+        ; 玩家角色
+        IF CFLAG:currentCharaID:TEAM == 1
+            ; TODO
+        ; 非玩家角色，目前只考虑敌人，是敌人角色就进敌人AI
+        ELSE
+            ; TODO
+        ENDIF
     RETURN

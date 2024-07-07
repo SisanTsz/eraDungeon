@@ -18,35 +18,35 @@ BASE,魔力,100
 BASE,性欲,200
 BASE,快感,200
 
-BASE,物理攻击,30
-BASE,法术攻击,4
-BASE,命中,95
-BASE,暴击率,10
-BASE,暴击伤害,150
-BASE,速度,12
+CFLAG,物理攻击,30
+CFLAG,法术攻击,4
+CFLAG,命中,95
+CFLAG,暴击率,10
+CFLAG,暴击伤害,150
+CFLAG,速度,12
 
-BASE,物理防御,10
-BASE,法术防御,10
-BASE,闪避,40
+CFLAG,物理防御,10
+CFLAG,法术防御,10
+CFLAG,闪避,40
 
-BASE,肉体抗性,80
-BASE,精神抗性,80
-BASE,异常抗性,70
-BASE,药毒抗性,70
-BASE,发情抗性,30
-BASE,位移抗性,90
-BASE,流血抗性,200
+CFLAG,肉体抗性,80
+CFLAG,精神抗性,80
+CFLAG,异常抗性,70
+CFLAG,药毒抗性,70
+CFLAG,发情抗性,30
+CFLAG,位移抗性,90
+CFLAG,流血抗性,200
 
-BASE,Ｍ名器,10
-BASE,Ｂ名器,8
-BASE,Ｈ名器,15
-BASE,Ｃ名器,12
-BASE,Ｐ名器,5
-BASE,Ｕ名器,6
-BASE,Ｖ名器,11
-BASE,Ａ名器,12
-BASE,Ｆ名器,15
-BASE,Ｓ名器,10
+CFLAG,Ｍ名器,10
+CFLAG,Ｂ名器,8
+CFLAG,Ｈ名器,15
+CFLAG,Ｃ名器,12
+CFLAG,Ｐ名器,5
+CFLAG,Ｕ名器,6
+CFLAG,Ｖ名器,11
+CFLAG,Ａ名器,12
+CFLAG,Ｆ名器,15
+CFLAG,Ｓ名器,10
 
 ; 初始技能列表
 CFLAG,SKILL1,1001
