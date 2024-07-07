@@ -14,6 +14,9 @@
     REND
 
 
+;----------------------------------------------------------------
+; 遍历EventListenerEnum，调用所有监听eventName的回调函数
+;----------------------------------------------------------------
 @Notification_Listener(eventName)
     #DIMS eventName
 
@@ -21,14 +24,17 @@
         IF EventListenerEnum:COUNT != eventName
             CONTINUE
         ELSE
-            TRYCALLFORM {EventListenerFunction:COUNT}({EventObj:CurrentEventID})
+            TRYCALLFORM EventListenerFunction:COUNT
             RETURN
         ENDIF
     REND
     RETURN
 
 
-
+;----------------------------------------------------------------
+; 添加监听，向EventListenerEnum添加监听事件名，向EventListenerFunction添加回调函数
+; 回调函数是无参数的，需要获取事件信息的话，直接从EventName:CurrentEventID读取，然后解包
+;----------------------------------------------------------------
 @Listen_Event(event_enum, callBackFunctionName)
     #DIMS event_enum
     #DIMS callBackFunctionName
@@ -45,7 +51,9 @@
     ErrorInfo = "监听队列已满，扩容吧！"
     RETURN
 
-
+;----------------------------------------------------------------
+; 移除一个监听
+;----------------------------------------------------------------
 @Unlisten_Event(event_enum, callBackFunctionName)
     #DIMS event_enum
     #DIMS callBackFunctionName
@@ -60,7 +68,9 @@
     EventListenerFunction =
     RETURN
 
-
+;----------------------------------------------------------------
+; 触发一个事件就是往事件列表里推送一条消息，然后Event_Manager会广播给所有监听这个事件的监听器，触发相应的回调函数
+;----------------------------------------------------------------
 @Trigger_Event(event_enum, eventObj)
     #DIMS event_enum
     #DIMS eventObj
