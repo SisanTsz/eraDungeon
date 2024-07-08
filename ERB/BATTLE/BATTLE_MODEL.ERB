@@ -113,9 +113,106 @@
         CALL Trigger_Event("回合开始", RoundStartEventObj)
         ; 玩家角色
         IF CFLAG:currentCharaID:TEAM == 1
-            ; TODO
+            CALL Trigger_Event("玩家操控", RoundStartEventObj)
         ; 非玩家角色，目前只考虑敌人，是敌人角色就进敌人AI
         ELSE
-            ; TODO
+            CALL Trigger_Event("AI操控", RoundStartEventObj)
         ENDIF
+        ; TODO: 获取操控结果，结算行动
+        CALL Trigger_Event("回合结束", RoundStartEventObj)
     RETURN
+
+;----------------------------------------------------------------
+; 自动向前排位移，只发生在战斗开始时以及有单位脱战时
+;----------------------------------------------------------------
+@Battle_AutoMove(isBattleStart = FALSE)
+    #DIM isBattleStart
+    #DIM pos
+
+    ; 遍历位置1~3，如果有空位，把空ID位移到最后排
+    FOR pos, 1, 4
+        IF PLAYER_POS:pos == 0
+            CALLF Battle_MoveExecute(pos, 3)
+        ENDIF
+    NEXT
+
+;----------------------------------------------------------------
+; 单位主动位移，需要征求队友同意
+;----------------------------------------------------------------
+@Battle_MoveRequest(pos, distance)
+    #DIM pos
+    #DIM distance
+
+    ; TODO: 判断自己是否能移动、判断目标是否在边界内、判断目标是否同意
+
+;----------------------------------------------------------------
+; 单位位移执行，distance为正时向后运动，否则向前运动
+; 返回移动距离
+;----------------------------------------------------------------
+@Battle_MoveExecute(fromPos, distance)
+#FUNCTION
+    #DIM fromPos
+    #DIM toPos
+    #DIM distance
+    #DIM isBack
+    #DIM isEnemy
+    #DIM iter
+    #DIM chara_ID
+    #DIMS eventObj
+    #DIM deltaDistance
+    
+    isEnemy = TRUE
+    IF fromPos < 0
+        ; 如果是玩家坐标，先转化成正数，方便计算
+        fromPos *= -1
+        isEnemy = FALSE
+    ENDIF
+
+    IF distance > 0
+        isBack = TRUE
+    ELSE
+        isBack = FALSE
+    ENDIF
+
+    toPos = fromPos + distance
+    ; 边界判断
+    SIF toPos < 0
+        toPos = 0
+    SIF toPos > 4
+        toPos = 4
+    ; 实际移动距离
+    deltaDistance = toPos - fromPos
+
+    ; 从fromPos取出要移动的角色ID
+    chara_ID = %zone%:fromPos
+    ; 将移动途经的角色都移动1位
+    IF isBack
+        FOR iter, fromPos, toPos
+            IF isEnemy
+                ENEMY_POS:iter = ENEMY_POS:(iter + 1)
+            ELSE
+                PLAYER_POS:iter = PLAYER_POS:(iter + 1)
+            ENDIF
+        NEXT
+    ELSE
+        FOR iter, fromPos, toPos, -1
+            IF isEnemy
+                ENEMY_POS:iter = ENEMY_POS:(iter - 1)
+            ELSE
+                PLAYER_POS:iter = PLAYER_POS:(iter - 1)
+            ENDIF
+        NEXT
+    ENDIF
+    ; 最后插入到toPos
+    IF isEnemy
+        ENEMY_POS:toPos = chara_ID
+    ELSE
+        PLAYER_POS:toPos = chara_ID
+    ENDIF
+
+    eventObj:0 = TOSTR(chara_ID)
+    eventObj:1 = TOSTR(deltaDistance)
+
+    CALL Trigger_Event("角色位移", eventObj)
+
+    RETURNF deltaDistance
