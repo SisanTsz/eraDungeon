@@ -43,3 +43,61 @@
         ENDIF
     REND
     RETURNF -1
+
+;----------------------------------------------------------------
+; 获取队伍成员数量
+;----------------------------------------------------------------
+@Get_MemberCount(isEnemy = FALSE)
+#FUNCTION
+    #DIM isEnemy
+    #DIM retCount
+
+    IF isEnemy == FALSE
+        REPEAT 4
+            SIF FLAG:TEAMMEMBER{COUNT} != 0
+                retCount += 1
+        REND
+    ELSE
+        REPEAT 4
+            SIF FLAG:ENEMYMEMBER{COUNT} != 0
+                retCount += 1
+        REND
+    ENDIF
+
+    RETURNF retCount
+
+;----------------------------------------------------------------
+; 修剪字符串前后出现的特定字符（未测试）
+;----------------------------------------------------------------
+@Trim(string, char = " ")
+#FUNCTIONS
+    #DIMS string
+    #DIMS char
+    #DIMS ret
+    #DIM leftIndex
+    #DIM rightIndex
+    #DIM len
+
+    
+    len = %STRLENS(string)%
+
+    FOR leftIndex, 0, len
+        SUBSTRINGU string, leftIndex, 1
+        IF RESULTS != char
+            BREAK
+        ENDIF
+    NEXT
+
+    FOR rightIndex, len - 1, -1
+        SUBSTRINGU string, rightIndex, 1
+        IF RESULTS != char
+            BREAK
+        ENDIF
+    NEXT
+
+    IF leftIndex >= rightIndex
+        RETURNF ""
+    ENDIF
+
+    ret = %SUBSTRINGU(string, leftIndex, rightIndex - leftIndex + 1)%
+    RETURNF ret

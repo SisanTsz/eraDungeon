@@ -135,6 +135,11 @@
             CALLF Battle_MoveExecute(pos, 3)
         ENDIF
     NEXT
+    FOR pos, 1, 4
+        IF ENEMY_POS:pos == 0
+            CALLF Battle_MoveExecute(pos, 3)
+        ENDIF
+    NEXT
 
 ;----------------------------------------------------------------
 ; 单位主动位移，需要征求队友同意
@@ -178,8 +183,8 @@
     ; 边界判断
     SIF toPos < 0
         toPos = 0
-    SIF toPos > 4
-        toPos = 4
+    SIF toPos > Get_MemberCount(isEnemy)
+        toPos = Get_MemberCount(isEnemy)
     ; 实际移动距离
     deltaDistance = toPos - fromPos
 
@@ -210,9 +215,9 @@
         PLAYER_POS:toPos = chara_ID
     ENDIF
 
+    ; 发送位移事件
     eventObj:0 = TOSTR(chara_ID)
     eventObj:1 = TOSTR(deltaDistance)
-
     CALL Trigger_Event("角色位移", eventObj)
 
     RETURNF deltaDistance
